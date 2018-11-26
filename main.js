@@ -3,6 +3,9 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 600;
 
+const pointCounter = document.getElementById('counter');
+pointCounter.points = 0;
+
 const rightKeyCode = 39;
 const leftKeyCode = 37;
 const topKeyCode = 38;
@@ -76,15 +79,32 @@ window.Field = {
     }
 };
 
+function initializeFruits() {
+    let fruits = [];
+
+    Field.matrix.forEach((row, index, arr) => {
+        if (index === 0 || index === arr.length - 1) return;
+
+        let cellNumber = Math.round(Math.random() * (1 - (row.length - 1))) + (row.length - 1);
+        if (row[cellNumber] === 1) return;
+
+        let fruit = new Fruit({ fruitX: cellNumber * 20, fruitY: index * 20 });
+        fruits.push(fruit);
+    });
+
+    return fruits;
+}
+
 function clearFon() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function redraw(hero, enemies) {
+function redraw(hero, enemies, fruits) {
     clearFon();
     Field.draw();
+    for (const fruit of fruits) fruit && fruit.draw();
     hero.draw();
-    enemies.forEach(enemy => enemy.draw());
+    for (const enemy of enemies) enemy.draw();
 }
 
 window.keysMap = {
@@ -117,16 +137,63 @@ function keyDownHandler(e) {
     }
 }
 
-function update(hero, enemies, deltaTime) {
+function checkCollisionWithFruits(hero, fruits) {
+    let heroLeftBound = hero.x + (10 - hero.r);
+    let heroRightBound = hero.x + 20 - (10 - hero.r);
+    let heroTopBound = hero.y + (10 - hero.r);
+    let heroBottomBound = hero.y + 20 - (10 - hero.r);
+
+    fruits.forEach((fruit, i, arr) => {
+        if (!fruit) return;
+
+        let fruitLeftBound = fruit.x + (10 - fruit.r);
+        let fruitRightBound = fruit.x + 20 - (10 - fruit.r);
+        let fruitTopBound = fruit.y + (10 - fruit.r);
+        let fruitBottomBound = fruit.y + 20 - (10 - fruit.r);
+
+        if (hero.y === fruit.y && ((heroLeftBound < fruitRightBound && heroLeftBound > fruitLeftBound)
+            || (heroRightBound > fruitLeftBound && heroRightBound < fruitRightBound))) {
+            arr[i] = null;
+            increasePoints();
+        }
+        if (hero.x === fruit.x && ((heroTopBound < fruitBottomBound && heroTopBound > fruitTopBound)
+            || (heroBottomBound > fruitTopBound && heroBottomBound < fruitBottomBound))) {
+            arr[i] = null;
+            increasePoints();
+        }
+    });
+}
+
+function update(hero, enemies, fruits, deltaTime) {
     let heroStep = Math.floor(100 * deltaTime);
     let enemyStep = Math.floor(200 * deltaTime);
 
     hero.update(heroStep);
-    enemies.forEach(enemy => enemy.update(enemyStep));
+    checkCollisionWithFruits(hero, fruits);
+    for (const enemy of enemies) enemy.update(enemyStep);
+}
+
+function initializeCounter() {
+    pointCounter.innerText = (pointCounter.points + "").padStart(8, "0");
+}
+
+function increasePoints() {
+    let iterations = 200;
+
+    let counterInterval = setInterval(function () {
+        pointCounter.innerText = (++pointCounter.points + "").padStart(8, "0");
+        iterations--;
+
+        if (iterations === 0) {
+            clearInterval(counterInterval);
+        }
+    })
 }
 
 function main() {
     document.addEventListener('keydown', keyDownHandler, false);
+
+    initializeCounter();
 
     const heroX = (canvas.width - Hero.WIDTH) / 2 + Field.blockageWidth / 2;
     const heroY = (canvas.height - Hero.HEIGHT) / 2 - Field.blockageHeight / 2;
@@ -154,21 +221,21 @@ function main() {
             enemyColor: 'white'
         }
     ];
-
     let enemies = enemiesParams.map(enemy => new Enemy(enemy));
 
-    redraw(hero, enemies);
-    let lastTimeStamp = Date.now(); //текущее время в ms
+    let fruits = initializeFruits();
+
+    const deltaTime = 1 / 60;
+
+    redraw(hero, enemies, fruits);
     const animateFn = () => {
-        const currentTimeStamp = Date.now();
-        const deltaTime = (currentTimeStamp - lastTimeStamp) * 0.001; //секунд прошло с прошлого кадра
-        lastTimeStamp = currentTimeStamp;
+        update(hero, enemies, fruits, deltaTime);
 
-        update(hero, enemies, deltaTime);
+        if (fruits.every(fruit => !fruit)) fruits = initializeFruits();
 
-        redraw(hero, enemies);
+        redraw(hero, enemies, fruits);
 
-        requestAnimationFrame(animateFn);
+        setTimeout(animateFn, Math.floor(1000 / 60));
     }
 
     animateFn();

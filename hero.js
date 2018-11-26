@@ -15,7 +15,7 @@ window.Hero = function Hero({ heroX, heroY, heroR }) {
 
     this.update = function (step) {
         this.checkCollisionWithField(step);
-        this.updateDirection(step);
+        this.updateDirection();
         this.updatePosition(step);
     }
 
@@ -38,7 +38,6 @@ window.Hero = function Hero({ heroX, heroY, heroR }) {
 
         if (this.direction.OX && (collideSides.left || collideSides.right)) {
             this.x = currentIndexes.column * Field.blockageWidth;
-
             if (this.direction.left) this.x += 20;
 
             keysMap.left = collideSides.left ? false : keysMap.left;
@@ -49,7 +48,6 @@ window.Hero = function Hero({ heroX, heroY, heroR }) {
 
         if (this.direction.OY && (collideSides.up || collideSides.down)) {
             this.y = currentIndexes.row * Field.blockageHeight;
-
             if (this.direction.up) this.y += 20;
 
             keysMap.up = collideSides.up ? false : keysMap.up;

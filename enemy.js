@@ -83,29 +83,56 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
         let directionsArray = [];
         clearInterval(this.directionChangeInterval);
         this.directionChangeInterval = null;
-        this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
         let collision = this.checkCurrentCollision();
 
-        if (!collision.left) {
+        if (!collision.left && !this.direction.OX) {
             directionsArray.push("left");
         }
-        if (!collision.right) {
+        if (!collision.right && !this.direction.OX) {
             directionsArray.push("right");
         }
-        if (!collision.up) {
+        if (!collision.up && !this.direction.OY) {
             directionsArray.push("up");
         }
-        if (!collision.down) {
+        if (!collision.down && !this.direction.OY) {
             directionsArray.push("down");
         }
 
+        if (!directionsArray.length) {
+            if (this.direction.OX) {
+                if (this.direction.left) {
+                    this.setDirection('right');
+
+                    return;
+                }
+                if (this.direction.right) {
+                    this.setDirection('left');
+
+                    return;
+                }
+            }
+
+            if (this.direction.OY) {
+                if (this.direction.up) {
+                    this.setDirection('down');
+
+                    return;
+                }
+                if (this.direction.down) {
+                    this.setDirection('up');
+
+                    return;
+                }
+            }
+        }
+
+        this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
         let index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
         this.setDirection(directionsArray[index]);
     }
 
     const COLOR = enemyColor;
     this.draw = function () {
-        ctx.fillStyle = COLOR;
         ctx.fillStyle = COLOR;
         ctx.beginPath();
         ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
@@ -131,10 +158,10 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
         let field = Field.matrix;
 
         if (indexesWithStep.row < 0 || indexesWithStep.rowWide > 30 || indexesWithStep.column < 0 || indexesWithStep.columnWide > 40) {
-            if (indexesWithStep.row < 0) thix.y = 20;
-            if (indexesWithStep.rowWide > 30) thix.y = 580;
-            if (indexesWithStep.column < 0) thix.x = 20;
-            if (indexesWithStep.columnWide > 40) thix.x = 780;
+            if (indexesWithStep.row < 0) this.y = 20;
+            if (indexesWithStep.rowWide > 30) this.y = 580;
+            if (indexesWithStep.column < 0) this.x = 20;
+            if (indexesWithStep.columnWide > 40) this.x = 780;
 
             this.getRandomDirection();
 
@@ -210,7 +237,7 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
 
     this.updateDirection = function () {
         if (!this.directionChangeInterval) {
-            this.directionChangeInterval = setInterval(() => this.changeDirection(), 1000);
+            this.directionChangeInterval = setInterval(() => this.changeDirection(), 300);
         }
 
         if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
