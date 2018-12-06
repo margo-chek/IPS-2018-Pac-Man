@@ -174,14 +174,14 @@ function update(hero, enemies, fruits, deltaTime) {
 }
 
 function initializeCounter() {
-    pointCounter.innerText = (pointCounter.points + "").padStart(8, "0");
+    pointCounter.innerText = (pointCounter.points + "").padStart(6, "0");
 }
 
 function increasePoints() {
-    let iterations = 200;
+    let iterations = 20;
 
     let counterInterval = setInterval(function () {
-        pointCounter.innerText = (++pointCounter.points + "").padStart(8, "0");
+        pointCounter.innerText = (++pointCounter.points + "").padStart(6, "0");
         iterations--;
 
         if (iterations === 0) {

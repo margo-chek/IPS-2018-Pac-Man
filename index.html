@@ -1,21 +1,46 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+  <!-- Required meta tags -->
+  <meta charset="UTF-8">
   <title></title>
   <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <h1 id="counter" class="counter"></h1>
-  <canvas id="Canvas"></canvas>
+  <div class="container containerMenu my-4">
+    <div class="row justify-content-end">
+      <div class=" menu col-6">
+        <h1 class="mainTitle">Real Pacman!</h1>
+        <div class="pointIndex">Счет: <span id="counter" class="counter"></span></div>
+      </div>
+      <div class="col-6 my-4">
+        <div class="row">
+          <div class="col">
+              <button type="button" class="btn btn-info buttonIndex">Таблица рекордов</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-danger buttonIndex">Выйти</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container containerCanvas">
+    <canvas id="Canvas"></canvas>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script type="text/javascript" src="hero.js"></script>
   <script type="text/javascript" src="enemy.js"></script>
   <script type="text/javascript" src="fruit.js"></script>
   <script type="text/javascript" src="main.js"></script>
+  <script type="text/javascript" src="const.js"></script>
 </body>
 
 </html>

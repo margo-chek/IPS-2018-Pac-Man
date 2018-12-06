@@ -5,15 +5,90 @@ html, body {
 }
  Canvas {
     display: block;
-    margin: auto;
-    position: absolute;
+    margin: 20px auto;
+    /*position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
     background-color: #444;
 }
 
+ .pointIndex
+ {
+     font: 600 24px/28px "Open Sans";
+     color: aqua;
+     margin: 20px 0;
+     font-size: 24px;
+ }
+
 .counter {
-    color: #ffffff;
+    color: #fff;
+    font-size: 30px;
+}
+
+.containerMainPage {
+    /*display: block;
+    flex-direction: row;
+    justify-content: space-between;*/
+    font-size: 18px;
+    line-height: 24px;
+    color: white;
+    /*background-color: #444;*/
+}
+
+.mainTitle
+{
+    font: 900 60px/68px "Open Sans";
+    color: aqua;
+    margin-left: 110px;
+}
+
+.buttonMain
+{
+    float: right;
+    padding: 10px 58px;
+    font-size: 30px;
+}
+
+.buttonIndex
+{
+    padding: 8px 25px;
+    font-size: 20px;
+}
+
+.menu {
+    font-size: 16px;
+    color: white;
+}
+
+.contentTop {
+    display: block;
+    top: 0px;
+    width: 100%;
+    height: 20%;
+}
+
+.contentCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 60%;
+}
+
+.contentBottom {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 20%;
+}
+
+.imgMainPage
+{
+    background: url("image/pacman.jpg") no-repeat center;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
 }
