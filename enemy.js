@@ -4,6 +4,8 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
     this.r = 7;
     this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
     this.directionChangeInterval = null;
+    const heroSprite = new Image();
+    heroSprite.src = 'image/ene.png';
 
     this.initialize = function (expectedDirection = '') {
         let collision = this.checkCurrentCollision();
@@ -131,12 +133,22 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
         this.setDirection(directionsArray[index]);
     }
 
-    const COLOR = enemyColor;
     this.draw = function () {
-        ctx.fillStyle = COLOR;
-        ctx.beginPath();
-        ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(
+            heroSprite,
+            0,
+            0,
+            423,
+            473,
+            this.x,
+            this.y,
+            Enemy.WIDTH,
+            Enemy.HEIGHT,
+        );
+        //ctx.fillStyle = COLOR;
+        //ctx.beginPath();
+        //ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
+        //ctx.fill();
     }
 
     this.update = function (step) {

@@ -3,14 +3,25 @@ window.Hero = function Hero({ heroX, heroY, heroR }) {
     this.y = Math.round(heroY);
     this.r = heroR;
     this.direction = { OY: true, OX: false };
-
-    const COLOR = "yellow";
+    const heroSprite = new Image();
+    heroSprite.src = 'image/pac.png';
 
     this.draw = function () {
-        ctx.fillStyle = COLOR;
-        ctx.beginPath();
-        ctx.arc((this.x + Hero.WIDTH / 2), (this.y + Hero.HEIGHT / 2), this.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(
+            heroSprite,
+            0,
+            0,
+            485,
+            500,
+            this.x,
+            this.y,
+            Hero.WIDTH,
+            Hero.HEIGHT,
+        );
+        //ctx.fillStyle = COLOR;
+        //ctx.beginPath();
+        //ctx.arc((this.x + Hero.WIDTH / 2), (this.y + Hero.HEIGHT / 2), this.r, 0, Math.PI * 2);
+        //ctx.fill();
     }
 
     this.update = function (step) {

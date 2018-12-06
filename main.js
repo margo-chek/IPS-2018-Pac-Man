@@ -53,7 +53,7 @@ window.Field = {
         const dBlockageY = 20;
         Field.matrix.forEach(item => {
             item.forEach(number => {
-                ctx.fillStyle = number === 1 ? 'brown' : 'green';
+                ctx.fillStyle = number === 1 ? '#62016D' : '#2D9B27';
                 ctx.fillRect(blockageX, blockageY, Field.blockageWidth, Field.blockageHeight);
                 blockageX += dBlockageX;
             });
