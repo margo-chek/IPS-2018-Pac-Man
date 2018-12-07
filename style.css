@@ -3,27 +3,25 @@ html, body {
     padding: 0;
     background-color: #151515;
 }
+
+h2 {
+    color: green;
+}
+
  Canvas {
     display: block;
     margin: 20px auto;
-    /*position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;*/
     background-color: #444;
 }
 
- .pointIndex
- {
+ .pointIndex {
      font: 600 24px/28px "Open Sans";
      color: aqua;
-     margin: 20px 0;
      font-size: 24px;
  }
 
 .counter {
-    color: #fff;
+    color: yellow;
     font-size: 30px;
 }
 
@@ -33,33 +31,30 @@ html, body {
     justify-content: space-between;*/
     font-size: 18px;
     line-height: 24px;
-    color: white;
+    color: yellow;
     /*background-color: #444;*/
 }
 
-.mainTitle
-{
+.mainTitle {
     font: 900 60px/68px "Open Sans";
     color: aqua;
     margin-left: 110px;
 }
 
-.buttonMain
-{
+.buttonMain {
     float: right;
     padding: 10px 58px;
     font-size: 30px;
 }
 
-.buttonIndex
-{
+.buttonIndex {
     padding: 8px 25px;
     font-size: 20px;
 }
 
 .menu {
     font-size: 16px;
-    color: white;
+    color: yellow;
 }
 
 .contentTop {
@@ -85,9 +80,15 @@ html, body {
     height: 20%;
 }
 
-.imgMainPage
-{
+.imgMainPage {
     background: url("image/pacman.jpg") no-repeat center;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+}
+
+.imgMainName {
+    background: url("image/pacman1.png") no-repeat center;
     width: 100%;
     height: 100%;
     background-size: contain;

@@ -1,9 +1,11 @@
 window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" }) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
-    this.r = 7;
+    // this.r = 7;
     this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
     this.directionChangeInterval = null;
+    const enemySprite = new Image();
+    enemySprite.src = 'image/ene.png';
 
     this.initialize = function (expectedDirection = '') {
         let collision = this.checkCurrentCollision();
@@ -131,12 +133,22 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
         this.setDirection(directionsArray[index]);
     }
 
-    const COLOR = enemyColor;
     this.draw = function () {
-        ctx.fillStyle = COLOR;
-        ctx.beginPath();
-        ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.drawImage(
+            enemySprite,
+            Enemy.START,
+            Enemy.START,
+            Enemy.IMG_WIDTH,
+            Enemy.IMG_HEIGHT,
+            this.x,
+            this.y,
+            Enemy.WIDTH,
+            Enemy.HEIGHT,
+        );
+        //ctx.fillStyle = COLOR;
+        //ctx.beginPath();
+        //ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
+        //ctx.fill();
     }
 
     this.update = function (step) {
@@ -295,3 +307,6 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
 
 Enemy.WIDTH = 20;
 Enemy.HEIGHT = 20;
+Enemy.IMG_WIDTH = 423;
+Enemy.IMG_HEIGHT = 473;
+Enemy.START = 0;
