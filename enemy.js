@@ -1,7 +1,7 @@
 window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" }) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
-    // this.r = 7;
+    this.r = 7;
     this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
     this.directionChangeInterval = null;
     const enemySprite = new Image();

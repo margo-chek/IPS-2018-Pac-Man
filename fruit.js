@@ -1,11 +1,11 @@
 window.Fruit = function Fruit({ fruitX, fruitY }) {
     this.x = Math.round(fruitX);
     this.y = Math.round(fruitY);
-    //this.r = 3;
+    this.r = 3;
     const bonusSprite = new Image();
     bonusSprite.src = 'image/fru.png';
 
-    //const COLOR = "pink";
+    const COLOR = "pink";
 
     this.draw = function () {
         ctx.drawImage(
