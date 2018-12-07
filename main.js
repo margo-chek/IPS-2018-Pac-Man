@@ -90,7 +90,7 @@ function initializeFruits() {
         let cellNumber = Math.round(Math.random() * (1 - (row.length - 1))) + (row.length - 1);
         if (row[cellNumber] === 1) return;
 
-        let fruit = new Fruit({ fruitX: cellNumber * 20, fruitY: index * 20 });
+        let fruit = new Fruit({fruitX: cellNumber * 20, fruitY: index * 20});
         fruits.push(fruit);
     });
 

@@ -1,0 +1,25 @@
+{
+  "name": "pacman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-defaults": "^9.0.0",
+    "eslint-config-google": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/margo-chek/IPS-2018-Pac-Man.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/margo-chek/IPS-2018-Pac-Man/issues"
+  },
+  "homepage": "https://github.com/margo-chek/IPS-2018-Pac-Man#readme"
+}
