@@ -1,143 +1,222 @@
-window.Hero = function Hero({ heroX, heroY, heroR }) {
+'use strict';
+import * as Const from './const.js';
+import {CTX} from './const.js';
+
+export default function Hero({heroX, heroY, heroR}) {
     this.x = Math.round(heroX);
     this.y = Math.round(heroY);
     this.r = heroR;
-    this.direction = { OY: true, OX: false };
-    const heroSprite = new Image();
-    heroSprite.src = 'image/pac.png';
+    this.direction = {OY: true, OX: false};
 
-    this.draw = function () {
-        ctx.drawImage(
-            heroSprite,
-            Hero.START,
-            Hero.START,
-            Hero.IMG_WIDTH,
-            Hero.IMG_HEIGHT,
-            this.x,
-            this.y,
-            Hero.WIDTH,
-            Hero.HEIGHT,
-        );
-        //ctx.fillStyle = COLOR;
-        //ctx.beginPath();
-        //ctx.arc((this.x + Hero.WIDTH / 2), (this.y + Hero.HEIGHT / 2), this.r, 0, Math.PI * 2);
-        //ctx.fill();
-    }
+    const IMAGE = new Image(480, 480);
+    IMAGE.src = '/pacman/image/pac.png';
 
-    this.update = function (step) {
-        this.checkCollisionWithField(step);
-        this.updateDirection();
-        this.updatePosition(step);
-    }
+    const isCollide = function(row, column) {
+        return Const.MATRIX[row][column] === 1;
+    };
 
-    this.checkCollisionWithField = function (step = 0) {
-        let indexesWithStep = Field.getIndexes(this, step);
-        let currentIndexes = Field.getIndexes(this);
-        let collideSides = {
-            left: false,
-            right: false,
-            up: false,
-            down: false
+    const isCollideLeft = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row, indexes.column - 1);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
+    };
+
+    const isCollideRight = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
+
+        return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
+    };
+
+    const isCollideUp = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row - 1, indexes.column);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
+    };
+
+    const isCollideDown = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
+    };
+
+    const getCollideSides = function(field, type, step = 0) {
+        const indexes = field.getIndexes(this, step);
+
+        const isDirection = type === 'direction';
+
+        return {
+            left: isCollideLeft(indexes, isDirection),
+            right: isCollideRight(indexes, isDirection),
+            up: isCollideUp(indexes, isDirection),
+            down: isCollideDown(indexes, isDirection),
         };
+    }.bind(this);
 
-        let field = Field.matrix;
+    const fixWhenOXCollision = function(indexes, field, collision) {
+        this.x = indexes.column * field.blockageWidth;
+        if (this.direction.left) this.x += 20;
 
-        if (field[indexesWithStep.row][indexesWithStep.column] === 1 || field[indexesWithStep.rowWide][indexesWithStep.column] === 1) collideSides.left = true;
-        if (field[indexesWithStep.row][indexesWithStep.columnWide] === 1 || field[indexesWithStep.rowWide][indexesWithStep.columnWide] === 1) collideSides.right = true;
-        if (field[indexesWithStep.row][indexesWithStep.column] === 1 || field[indexesWithStep.row][indexesWithStep.columnWide] === 1) collideSides.up = true;
-        if (field[indexesWithStep.rowWide][indexesWithStep.column] === 1 || field[indexesWithStep.rowWide][indexesWithStep.columnWide] === 1) collideSides.down = true;
+        Const.KEYS_MAP.left = collision.left ? false : Const.KEYS_MAP.left;
+        Const.KEYS_MAP.right = collision.right ? false : Const.KEYS_MAP.right;
+    }.bind(this);
 
-        if (this.direction.OX && (collideSides.left || collideSides.right)) {
-            this.x = currentIndexes.column * Field.blockageWidth;
-            if (this.direction.left) this.x += 20;
+    const fixWhenOYCollision = function(indexes, field, collision) {
+        this.y = indexes.row * field.blockageHeight;
+        if (this.direction.up) this.y += 20;
 
-            keysMap.left = collideSides.left ? false : keysMap.left;
-            keysMap.right = collideSides.right ? false : keysMap.right;
+        Const.KEYS_MAP.up = collision.up ? false : Const.KEYS_MAP.up;
+        Const.KEYS_MAP.down = collision.down ? false : Const.KEYS_MAP.down;
+    }.bind(this);
+
+    const checkCollisionWithField = function(field, step = 0) {
+        const currentIndexes = field.getIndexes(this);
+        const collideSides = getCollideSides(field, 'withField', step);
+
+        const isCollideByOX = this.direction.OX && (collideSides.left || collideSides.right);
+        const isCollideByOY = this.direction.OY && (collideSides.up || collideSides.down);
+
+        if (isCollideByOX) {
+            fixWhenOXCollision(currentIndexes, field, collideSides);
 
             return;
         }
 
-        if (this.direction.OY && (collideSides.up || collideSides.down)) {
-            this.y = currentIndexes.row * Field.blockageHeight;
-            if (this.direction.up) this.y += 20;
+        if (isCollideByOY) fixWhenOYCollision(currentIndexes, field, collideSides);
+    }.bind(this);
 
-            keysMap.up = collideSides.up ? false : keysMap.up;
-            keysMap.down = collideSides.down ? false : keysMap.down;
-        }
-    }
+    const isCollideByOX = function(object, objectBounds) {
+        const isCollideByLeft = this.rightBound > objectBounds.left && this.rightBound < objectBounds.right;
+        const isCollideByRight = this.leftBound < objectBounds.right && this.leftBound > objectBounds.left;
 
-    this.updateDirection = function () {
+        return this.y === object.y && (isCollideByLeft || isCollideByRight);
+    }.bind(this);
+
+    const isCollideByOY = function(object, objectBounds) {
+        const isCollideByTop = this.bottomBound > objectBounds.top && this.bottomBound < objectBounds.bottom;
+        const isCollideByBottom = this.topBound < objectBounds.bottom && this.topBound > objectBounds.top;
+
+        return this.x === object.x && (isCollideByTop || isCollideByBottom);
+    }.bind(this);
+
+    const getObjectBounds = function(object) {
+        return {
+            left: object.x,
+            right: object.x + 20,
+            top: object.y,
+            bottom: object.y + 20,
+        };
+    };
+
+    const compileHeroBounds = function() {
+        this.leftBound = this.x + (10 - this.r);
+        this.rightBound = this.x + 20 - (10 - this.r);
+        this.topBound = this.y + (10 - this.r);
+        this.bottomBound = this.y + 20 - (10 - this.r);
+    }.bind(this);
+
+    const doCanChangeDirectionToOX = function(collideDirections) {
+        const doCanToGoLeft = Const.KEYS_MAP.left && !collideDirections.left;
+        const doCanToGoRight = Const.KEYS_MAP.right && !collideDirections.right;
+
+        return this.direction.OY && (doCanToGoLeft || doCanToGoRight);
+    }.bind(this);
+
+    const doCanChangeDirectionToOY = function(collideDirections) {
+        const doCanToGoUp = Const.KEYS_MAP.up && !collideDirections.up;
+        const doCanToGoDown = Const.KEYS_MAP.down && !collideDirections.down;
+
+        return this.direction.OX && (doCanToGoUp || doCanToGoDown);
+    }.bind(this);
+
+    const changeDirectionToOX = function() {
+        this.direction.OY = false;
+        this.direction.OX = true;
+
+        Const.KEYS_MAP.up = false;
+        Const.KEYS_MAP.down = false;
+    }.bind(this);
+
+    const changeDirectionToOY = function() {
+        this.direction.OX = false;
+        this.direction.OY = true;
+
+        Const.KEYS_MAP.left = false;
+        Const.KEYS_MAP.right = false;
+    }.bind(this);
+
+    const updateDirection = function(field) {
         if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
         if (!Number.isInteger(this.y / 20) && this.direction.OY) return;
 
-        let collideDrections = {
-            left: false,
-            right: false,
-            up: false,
-            down: false
-        };
+        const collideDirections = getCollideSides(field, 'direction');
 
-        let indexes = Field.getIndexes(this);
-
-        let field = Field.matrix;
-        if (field[indexes.row][indexes.column - 1] === 1) collideDrections.left = true;
-        if (field[indexes.row][indexes.columnWide + 1] === 1) collideDrections.right = true;
-        if (field[indexes.row - 1][indexes.column] === 1) collideDrections.up = true;
-        if (field[indexes.rowWide + 1][indexes.column] === 1) collideDrections.down = true;
-
-        if (this.direction.OY && (keysMap.left || keysMap.right)) {
-            if ((keysMap.left && !collideDrections.left)
-                || (keysMap.right && !collideDrections.right)) {
-                this.direction.OY = false;
-                this.direction.OX = true;
-
-                keysMap.up = false;
-                keysMap.down = false;
-            }
+        if (doCanChangeDirectionToOX(collideDirections)) {
+            changeDirectionToOX();
 
             return;
         }
 
-        if (this.direction.OX && (keysMap.up || keysMap.down)) {
-            if ((keysMap.up && !collideDrections.up)
-                || (keysMap.down && !collideDrections.down)) {
-                this.direction.OX = false;
-                this.direction.OY = true;
+        if (doCanChangeDirectionToOY(collideDirections)) changeDirectionToOY();
+    }.bind(this);
 
-                keysMap.left = false;
-                keysMap.right = false;
-            }
-        }
-    }
-
-    this.updatePosition = function (step) {
+    const updatePosition = function(step) {
         if (this.direction.OY) {
-            if (!keysMap.up && !keysMap.down) return;
-
-            if (keysMap.up) {
+            if (!Const.KEYS_MAP.up && !Const.KEYS_MAP.down) return;
+            if (Const.KEYS_MAP.up) {
                 this.y -= step;
             }
-            if (keysMap.down) {
+            if (Const.KEYS_MAP.down) {
                 this.y += step;
             }
 
             return;
         }
 
-
-        if (!keysMap.left && !keysMap.right) return;
-
-        if (keysMap.left) {
+        if (!Const.KEYS_MAP.left && !Const.KEYS_MAP.right) return;
+        if (Const.KEYS_MAP.left) {
             this.x -= step;
         }
-        if (keysMap.right) {
+        if (Const.KEYS_MAP.right) {
             this.x += step;
         }
-    }
+    }.bind(this);
+
+    this.update = function(step, field) {
+        checkCollisionWithField(field, step);
+        updateDirection(field);
+        updatePosition(step);
+    };
+
+    this.checkCollisionWithObject = (object, i, arr) => {
+        if (!object) return false;
+
+        const objectBounds = getObjectBounds(object);
+        compileHeroBounds();
+
+        if (isCollideByOX(object, objectBounds) || isCollideByOY(object, objectBounds)) {
+            if (object.isFruit) arr[i] = null;
+
+            return true;
+        }
+
+        return false;
+    };
+
+    this.checkCollisionWithOtherObjects = function(objects) {
+        return objects.some(this.checkCollisionWithObject);
+    };
+
+    this.draw = function() {
+        CTX.drawImage(IMAGE, 0, 0, 480, 480, this.x, this.y, Hero.WIDTH, Hero.HEIGHT);
+    };
 }
 
 Hero.WIDTH = 20;
 Hero.HEIGHT = 20;
-Hero.IMG_WIDTH = 485;
-Hero.IMG_HEIGHT = 500;
-Hero.START = 0;
+
+Hero.initializeHero = function(field) {
+    const heroX = (Const.CANVAS.width - Hero.WIDTH) / 2 + field.blockageWidth / 2;
+    const heroY = (Const.CANVAS.height - Hero.HEIGHT) / 2 - field.blockageHeight / 2;
+
+    return new Hero({heroX, heroY, heroR: 6});
+};

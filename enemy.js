@@ -1,288 +1,311 @@
-window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" }) {
+'use strict';
+import {CTX, MATRIX} from './const.js';
+
+export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
-    this.r = 7;
-    this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
+
+    const IMAGE = new Image(504, 504);
+    IMAGE.src = './image/ene.png';
+
+    this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
     this.directionChangeInterval = null;
-    const enemySprite = new Image();
-    enemySprite.src = 'image/ene.png';
 
-    this.initialize = function (expectedDirection = '') {
-        let collision = this.checkCurrentCollision();
+    const initializeUpDirection = function() {
+        this.direction.up = true;
+        this.direction.OY = true;
+    }.bind(this);
 
-        switch (expectedDirection) {
-            case 'up':
-                if (!collision.up) {
-                    this.direction.up = true;
-                    this.direction.OY = true;
+    const initializeDownDirection = function() {
+        this.direction.down = true;
+        this.direction.OY = true;
+    }.bind(this);
 
-                    return;
-                }
-                break;
-            case 'down':
-                if (!collision.down) {
-                    this.direction.down = true;
-                    this.direction.OY = true;
+    const initializeLeftDirection = function() {
+        this.direction.left = true;
+        this.direction.OX = true;
+    }.bind(this);
 
-                    return;
-                }
-                break;
-            case 'left':
-                if (!collision.left) {
-                    this.direction.left = true;
-                    this.direction.OX = true;
+    const initializeRightDirection = function() {
+        this.direction.right = true;
+        this.direction.OX = true;
+    }.bind(this);
 
-                    return;
-                }
-                break;
-            case 'right':
-                if (!collision.right) {
-                    this.direction.right = true;
-                    this.direction.OX = true;
-
-                    return;
-                }
-                break;
-        }
-
-        this.getRandomDirection();
-    }
-
-    this.setDirection = function (direction) {
+    const initializeDirection = function( direction, collision ) {
         switch (direction) {
-            case 'up':
-                this.direction.up = true;
-                this.direction.down = false;
-
-                this.direction.OY = true;
-                this.direction.OX = false;
-                break;
-            case 'down':
-                this.direction.down = true;
-                this.direction.up = false;
-
-                this.direction.OY = true;
-                this.direction.OX = false;
-                break;
-            case 'left':
-                this.direction.left = true;
-                this.direction.right = false;
-
-                this.direction.OX = true;
-                this.direction.OY = false;
-                break;
-            case 'right':
-                this.direction.right = true;
-                this.direction.left = false;
-
-                this.direction.OX = true;
-                this.direction.OY = false;
-                break;
+        case 'up':
+            if (!collision.up) initializeUpDirection();
+            break;
+        case 'down':
+            if (!collision.down) initializeDownDirection();
+            break;
+        case 'left':
+            if (!collision.left) initializeLeftDirection();
+            break;
+        case 'right':
+            if (!collision.right) initializeRightDirection();
+            break;
         }
-    }
+    };
 
-    this.getRandomDirection = function () {
-        let directionsArray = [];
-        clearInterval(this.directionChangeInterval);
-        this.directionChangeInterval = null;
-        let collision = this.checkCurrentCollision();
+    const setUpDirection = function() {
+        this.direction.up = true;
+        this.direction.down = false;
 
+        this.direction.OY = true;
+        this.direction.OX = false;
+    }.bind(this);
+
+    const setDownDirection = function() {
+        this.direction.down = true;
+        this.direction.up = false;
+
+        this.direction.OY = true;
+        this.direction.OX = false;
+    }.bind(this);
+
+    const setLeftDirection = function() {
+        this.direction.left = true;
+        this.direction.right = false;
+
+        this.direction.OX = true;
+        this.direction.OY = false;
+    }.bind(this);
+
+    const setRightDirection = function() {
+        this.direction.right = true;
+        this.direction.left = false;
+
+        this.direction.OX = true;
+        this.direction.OY = false;
+    }.bind(this);
+
+    const setDirection = function(direction) {
+        switch (direction) {
+        case 'up':
+            setUpDirection();
+            break;
+        case 'down':
+            setDownDirection();
+            break;
+        case 'left':
+            setLeftDirection();
+            break;
+        case 'right':
+            setRightDirection();
+            break;
+        }
+    };
+
+    const getDirectionsArray = function(collision) {
+        const directionsArray = [];
         if (!collision.left && !this.direction.OX) {
-            directionsArray.push("left");
+            directionsArray.push('left');
         }
         if (!collision.right && !this.direction.OX) {
-            directionsArray.push("right");
+            directionsArray.push('right');
         }
         if (!collision.up && !this.direction.OY) {
-            directionsArray.push("up");
+            directionsArray.push('up');
         }
         if (!collision.down && !this.direction.OY) {
-            directionsArray.push("down");
+            directionsArray.push('down');
         }
 
-        if (!directionsArray.length) {
-            if (this.direction.OX) {
-                if (this.direction.left) {
-                    this.setDirection('right');
+        return directionsArray;
+    }.bind(this);
 
-                    return;
-                }
-                if (this.direction.right) {
-                    this.setDirection('left');
-
-                    return;
-                }
-            }
-
-            if (this.direction.OY) {
-                if (this.direction.up) {
-                    this.setDirection('down');
-
-                    return;
-                }
-                if (this.direction.down) {
-                    this.setDirection('up');
-
-                    return;
-                }
-            }
-        }
-
-        this.direction = { OY: false, OX: false, left: false, right: false, up: false, down: false };
-        let index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
-        this.setDirection(directionsArray[index]);
-    }
-
-    this.draw = function () {
-        ctx.drawImage(
-            enemySprite,
-            Enemy.START,
-            Enemy.START,
-            Enemy.IMG_WIDTH,
-            Enemy.IMG_HEIGHT,
-            this.x,
-            this.y,
-            Enemy.WIDTH,
-            Enemy.HEIGHT,
-        );
-        //ctx.fillStyle = COLOR;
-        //ctx.beginPath();
-        //ctx.arc((this.x + Enemy.WIDTH / 2), (this.y + Enemy.HEIGHT / 2), this.r, 0, Math.PI * 2);
-        //ctx.fill();
-    }
-
-    this.update = function (step) {
-        this.checkCollisionWithField(step);
-        this.updateDirection();
-        this.updatePosition(step);
-    }
-
-    this.checkCollisionWithField = function (step = 0) {
-        let indexesWithStep = Field.getIndexes(this, step);
-        let currentIndexes = Field.getIndexes(this);
-        let collideSides = {
-            left: false,
-            right: false,
-            up: false,
-            down: false
-        };
-
-        let field = Field.matrix;
-
-        if (indexesWithStep.row < 0 || indexesWithStep.rowWide > 30 || indexesWithStep.column < 0 || indexesWithStep.columnWide > 40) {
-            if (indexesWithStep.row < 0) this.y = 20;
-            if (indexesWithStep.rowWide > 30) this.y = 580;
-            if (indexesWithStep.column < 0) this.x = 20;
-            if (indexesWithStep.columnWide > 40) this.x = 780;
-
-            this.getRandomDirection();
+    const reflectByOX = function() {
+        if (this.direction.left) {
+            setDirection('right');
 
             return;
         }
 
-        if (field[indexesWithStep.row][indexesWithStep.column] === 1 || field[indexesWithStep.rowWide][indexesWithStep.column] === 1) collideSides.left = true;
-        if (field[indexesWithStep.row][indexesWithStep.columnWide] === 1 || field[indexesWithStep.rowWide][indexesWithStep.columnWide] === 1) collideSides.right = true;
-        if (field[indexesWithStep.row][indexesWithStep.column] === 1 || field[indexesWithStep.row][indexesWithStep.columnWide] === 1) collideSides.up = true;
-        if (field[indexesWithStep.rowWide][indexesWithStep.column] === 1 || field[indexesWithStep.rowWide][indexesWithStep.columnWide] === 1) collideSides.down = true;
+        setDirection('left');
+    }.bind(this);
 
-        if (this.direction.OX && (collideSides.left || collideSides.right)) {
-            this.x = currentIndexes.column * Field.blockageWidth;
+    const reflectByOY = function() {
+        if (this.direction.up) {
+            setDirection('down');
 
-            if (this.direction.left) this.x += 20;
+            return;
+        }
 
-            this.getRandomDirection();
+        setDirection('up');
+    }.bind(this);
+
+    const setReflectiveDirection = function() {
+        if (this.direction.OX) return reflectByOX();
+
+        if (this.direction.OY) reflectByOY();
+    }.bind(this);
+
+    const getRandomDirection = function(field) {
+        clearInterval(this.directionChangeInterval);
+        this.directionChangeInterval = null;
+
+        const directionsArray = getDirectionsArray(getCollideSides(field, 'direction'));
+        if (!directionsArray.length) return setReflectiveDirection();
+
+        this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
+        const index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
+        setDirection(directionsArray[index]);
+    }.bind(this);
+
+    const isCollide = function(row, column) {
+        return MATRIX[row][column] === 1;
+    };
+
+    const isCollideLeft = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row, indexes.column - 1);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
+    };
+
+    const isCollideRight = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
+
+        return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
+    };
+
+    const isCollideUp = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.row - 1, indexes.column);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
+    };
+
+    const isCollideDown = function(indexes, isDirection = false) {
+        if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
+
+        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
+    };
+
+    const getCollideSides = function(field, type, step = 0) {
+        const indexes = field.getIndexes(this, step);
+
+        const isDirection = type === 'direction';
+
+        return {
+            left: isCollideLeft(indexes, isDirection),
+            right: isCollideRight(indexes, isDirection),
+            up: isCollideUp(indexes, isDirection),
+            down: isCollideDown(indexes, isDirection),
+        };
+    }.bind(this);
+
+    const fixWhenOXCollision = function(indexes, field) {
+        this.x = indexes.column * field.blockageWidth;
+        if (this.direction.left) this.x += 20;
+
+        getRandomDirection(field);
+    }.bind(this);
+
+    const fixWhenOYCollision = function(indexes, field) {
+        this.y = indexes.row * field.blockageHeight;
+        if (this.direction.up) this.y += 20;
+
+        getRandomDirection(field);
+    }.bind(this);
+
+    const checkCollisionWithField = function(field, step = 0) {
+        const currentIndexes = field.getIndexes(this);
+        const collideSides = getCollideSides(field, 'withField', step);
+
+        const isCollideByOX = this.direction.OX && (collideSides.left || collideSides.right);
+        const isCollideByOY = this.direction.OY && (collideSides.up || collideSides.down);
+
+        if (isCollideByOX) {
+            fixWhenOXCollision(currentIndexes, field);
 
             return collideSides;
         }
 
-        if (this.direction.OY && (collideSides.up || collideSides.down)) {
-            this.y = currentIndexes.row * Field.blockageHeight;
-
-            if (this.direction.up) this.y += 20;
-
-            this.getRandomDirection();
-        }
+        if (isCollideByOY) fixWhenOYCollision(currentIndexes, field);
 
         return collideSides;
-    }
+    }.bind(this);
 
-    this.checkCurrentCollision = function () {
-        let collision = {
-            left: false,
-            right: false,
-            up: false,
-            down: false
-        };
+    const chooseNewOXDirection = function() {
+        const directions = ['up', 'down'];
 
-        let indexes = Field.getIndexes(this);
+        const index = Math.round(Math.random());
+        setDirection(directions[index]);
 
-        let field = Field.matrix;
-        if (field[indexes.row][indexes.column - 1] === 1) collision.left = true;
-        if (field[indexes.row][indexes.columnWide + 1] === 1) collision.right = true;
-        if (field[indexes.row - 1][indexes.column] === 1) collision.up = true;
-        if (field[indexes.rowWide + 1][indexes.column] === 1) collision.down = true;
+        this.direction.OX = true;
+        this.direction.OY = false;
+    }.bind(this);
 
-        return collision;
-    }
+    const chooseNewOYDirection = function() {
+        const directions = ['left', 'right'];
 
-    this.changeDirection = function () {
+        const index = Math.round(Math.random());
+        setDirection(directions[index]);
+
+        this.direction.OX = false;
+        this.direction.OY = true;
+    }.bind(this);
+
+    const chooseNewDirection = function() {
         if (this.direction.OX) {
-            let directions = ['up', 'down'];
-
-            let index = Math.round(Math.random());
-            this.setDirection(directions[index]);
-
-            this.direction.OX = true;
-            this.direction.OY = false;
+            chooseNewOXDirection();
 
             return;
         }
 
-        let directions = ['left', 'right'];
+        chooseNewOYDirection();
+    }.bind(this);
 
-        let index = Math.round(Math.random());
-        this.setDirection(directions[index]);
+    const doCanChangeDirectionToOX = function(collideDirections) {
+        const doCanToGoLeft = this.direction.left && !collideDirections.left;
+        const doCanToGoRight = this.direction.right && !collideDirections.right;
 
+        return this.direction.OY && (doCanToGoLeft || doCanToGoRight);
+    }.bind(this);
+
+    const doCanChangeDirectionToOY = function(collideDirections) {
+        const doCanToGoUp = this.direction.up && !collideDirections.up;
+        const doCanToGoDown = this.direction.down && !collideDirections.down;
+
+        return this.direction.OX && (doCanToGoUp || doCanToGoDown);
+    }.bind(this);
+
+    const changeDirectionToOX = function() {
+        this.direction.OY = false;
+        this.direction.OX = true;
+
+        this.direction.up = false;
+        this.direction.down = false;
+    }.bind(this);
+
+    const changeDirectionToOY = function() {
         this.direction.OX = false;
         this.direction.OY = true;
-    }
 
-    this.updateDirection = function () {
+        this.direction.left = false;
+        this.direction.right = false;
+    }.bind(this);
+
+    const updateDirection = function(field) {
         if (!this.directionChangeInterval) {
-            this.directionChangeInterval = setInterval(() => this.changeDirection(), 300);
+            this.directionChangeInterval = setInterval(() => chooseNewDirection(), 300);
         }
 
         if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
         if (!Number.isInteger(this.y / 20) && this.direction.OY) return;
 
-        let collideDirections = this.checkCurrentCollision();
+        const collideDirections = getCollideSides(field, 'direction');
 
-        if (this.direction.OY && (this.direction.left || this.direction.right)) {
-            if ((this.direction.left && !collideDirections.left)
-                || (this.direction.right && !collideDirections.right)) {
-                this.direction.OY = false;
-                this.direction.OX = true;
-
-                this.direction.up = false;
-                this.direction.down = false;
-            }
+        if (doCanChangeDirectionToOX(collideDirections)) {
+            changeDirectionToOX();
 
             return;
         }
 
-        if (this.direction.OX && (this.direction.up || this.direction.down)) {
-            if ((this.direction.up && !collideDirections.up)
-                || (this.direction.down && !collideDirections.down)) {
-                this.direction.OX = false;
-                this.direction.OY = true;
+        if (doCanChangeDirectionToOY(collideDirections)) changeDirectionToOY();
+    }.bind(this);
 
-                this.direction.left = false;
-                this.direction.right = false;
-            }
-        }
-    }
-
-    this.updatePosition = function (step) {
+    const updatePosition = function(step) {
         if (this.direction.OY) {
             if (this.direction.up) {
                 this.y -= step;
@@ -300,13 +323,59 @@ window.Enemy = function Enemy({ enemyX, enemyY, enemyColor, enemyDirection = "" 
         if (this.direction.right) {
             this.x += step;
         }
-    }
+    }.bind(this);
 
-    this.initialize(enemyDirection);
+    this.initialize = function(field, expectedDirection = '') {
+        const collision = getCollideSides(field, 'direction');
+
+        if (expectedDirection !== '') {
+            getRandomDirection(field);
+        } else {
+            initializeDirection(expectedDirection, collision);
+        }
+    };
+
+    this.update = function(step, field) {
+        checkCollisionWithField(field, step);
+        updateDirection(field);
+        updatePosition(step);
+    };
+
+    this.draw = function() {
+        CTX.drawImage(IMAGE, 0, 0, 504, 504, this.x, this.y, Enemy.WIDTH, Enemy.HEIGHT);
+    };
+
+    this.initialize(field, enemyDirection);
 }
 
 Enemy.WIDTH = 20;
 Enemy.HEIGHT = 20;
-Enemy.IMG_WIDTH = 423;
-Enemy.IMG_HEIGHT = 473;
-Enemy.START = 0;
+
+const getStartEnemies = function(field) {
+    return [
+        {
+            enemyX: 2 * field.blockageWidth,
+            enemyY: 6 * field.blockageHeight,
+            field: field,
+        },
+        {
+            enemyX: 2 * field.blockageWidth,
+            enemyY: 21 * field.blockageHeight,
+            field: field,
+        },
+        {
+            enemyX: 36 * field.blockageWidth,
+            enemyY: 6 * field.blockageHeight,
+            field: field,
+        },
+        {
+            enemyX: 36 * field.blockageWidth,
+            enemyY: 21 * field.blockageHeight,
+            field: field,
+        },
+    ];
+};
+
+Enemy.initializeEnemies = function(field) {
+    return getStartEnemies(field).map((enemy) => new Enemy(enemy));
+};
