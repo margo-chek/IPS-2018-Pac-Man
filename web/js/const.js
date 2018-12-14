@@ -69,6 +69,7 @@ function keyDownHandler(e) {
 
         KEYS_MAP.down = true;
     }
+    e.preventDefault();
 }
 
 document.addEventListener('keydown', keyDownHandler, false);
