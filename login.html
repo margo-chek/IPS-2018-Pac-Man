@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="web/style/style.css">
+    </head>
+    <body>
+        <div class="container containerMainPage my-5">
+            <div class="row justify-content-end">
+                <div class="col-6">
+                    <div class="imgMainName"></div>
+                    <!-- <h1 class="mainTitle">Real Pacman!</h1> -->
+                </div>
+                <div class="col-6 my-4">
+                    <button type="button" class="btn btn-danger buttonIndex">Выйти</button>
+                </div>
+            </div>
+        </div>
+        <div class="container containerMainPage">
+          <div class="row">
+            <div class="col-md-5">
+              <form action="actions/auth_user.php" method="post">
+                <h3>Вход в учетную запись</h3>
+                <div class="form-group" >
+                  <label for="email_login">E-mail</label>
+                  <input type="email" class="form-control" id="email_login" placeholder="Введите e-mail" name="email" autocomplete="off" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="password">Пароль</label>
+                  <input type="password" class="form-control" id="password" placeholder="Введите пароль" name="pass" required>
+                </div>
+                <button type="submit" class="btn btn-success">Войти</button>
+              </form>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-5">
+              <form action="actions/create_new_user.php" method="post">
+                <h3>Регистрация новой учетной записи</h3>
+                <div class="form-group">
+                  <label for="email_registration">E-mail</label>
+                  <input type="email" class="form-control" id="email_registration" placeholder="Введите e-mail" name="email" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                  <label for="password_registration">Придумайте пароль</label>
+                  <input type="password" class="form-control" id="password_registration" placeholder="Введите пароль" name="pass1" required>
+                  <span class="text-info">Чувствителен к регистру</span>
+                </div>
+                <div class="form-group">
+                  <label for="password_registration_again">Повторите пароль</label>
+                  <input type="password" class="form-control" id="password_registration_again" placeholder="Еще раз введите пароль"  name="pass2" required>
+                </div>
+                <div class="form-group">
+                  <label for="userName">Ваш ник</label>
+                  <input type="text" class="form-control" id="userName" placeholder="Введите имя"  name="name" autocomplete="off" required>
+                </div>
+                <button type="sumbit" class="btn btn-success">Зарегистрироваться</button>
+              </form>
+            </div>
+          </div>    
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>
