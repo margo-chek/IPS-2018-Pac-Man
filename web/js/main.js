@@ -37,7 +37,7 @@ function update({hero, enemies, fruits, field, pointCounter}, deltaTime) {
     hero.update(heroStep, field);
     if (hero.checkCollisionWithOtherObjects(fruits)) pointCounter.increasePoints();
 
-    const doAddNewEnemy = pointCounter.getCurrPoints() > previousPoints && pointCounter.getCurrPoints() % 1500 === 0;
+    const doAddNewEnemy = pointCounter.getCurrPoints() > previousPoints && pointCounter.getCurrPoints() % 300 === 0;
     if (doAddNewEnemy) addNewEnemy(hero, enemies, field);
     for (const enemy of enemies) enemy.update(enemyStep, field);
 

@@ -1,7 +1,10 @@
 'use strict';
 import {CTX, MATRIX} from './const.js';
 
+let enemyId = 0;
+
 export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
+    this.id = 'enemy' + (++enemyId);
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
@@ -227,6 +230,11 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     }.bind(this);
 
     const chooseNewOXDirection = function() {
+        if (!this.direction.left && !this.direction.right) {
+            const directions = ['left', 'right'];
+            const index = Math.round(Math.random());
+            setDirection(directions[index]);
+        }
         const directions = ['up', 'down'];
 
         const index = Math.round(Math.random());
@@ -237,6 +245,12 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     }.bind(this);
 
     const chooseNewOYDirection = function() {
+        if (!this.direction.up && !this.direction.down) {
+            const directions = ['up', 'down'];
+            const index = Math.round(Math.random());
+            setDirection(directions[index]);
+        }
+
         const directions = ['left', 'right'];
 
         const index = Math.round(Math.random());
@@ -306,6 +320,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     }.bind(this);
 
     const updatePosition = function(step) {
+        console.log(this);
         if (this.direction.OY) {
             if (this.direction.up) {
                 this.y -= step;
