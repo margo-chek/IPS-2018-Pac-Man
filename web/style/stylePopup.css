@@ -1,0 +1,623 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+body
+{
+    height: 100%;
+}
+
+.body_overflow_hidden
+{
+    overflow: hidden;
+}
+
+.body_padding_right
+{
+    padding-right: 17px;
+}
+
+nav
+{
+    background: #fff;
+    padding: 0;
+    margin: 0;
+}
+
+.wrapper
+{
+    max-width: 1024px;
+    margin: 0px auto;
+}
+
+.container
+{
+    width: 100%;
+    min-width: 320px;
+    max-width: 1920px;
+    position: relative;
+    color: #333;
+}
+
+.clear
+{
+    clear: both;
+}
+
+.text
+{
+    color: #333;
+    font: 18px/32px "Georgia";
+    margin-top: 34px;
+    margin-bottom: 36px;
+}
+
+.link
+{
+    font: 19px/46px "Georgia", serif;
+    text-decoration: none;
+    color: #15a98b;
+}
+
+.link:hover
+{
+    color: #098d72;
+}
+
+.link_name
+{
+    text-decoration: underline;
+}
+
+.big_button
+{
+    display: block;
+    background-color: #15a98c;
+    color: #fff;
+    height: 35px;
+    width: 220px;
+    padding-top: 15px;
+    text-align: center;
+    margin: 0 auto 60px auto;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 19px;
+    font-family: "Georgia";
+}
+
+.big_button:hover
+{
+    background-color: #098d72;
+}
+
+
+.container_form
+{
+    display: none;
+    color: #333;
+    background: #000000BF;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation-name: Arriving;
+    animation-duration: .5s;
+}
+
+@keyframes Arriving
+{
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.container_form.visible
+{
+    display: block;
+    cursor: pointer;
+}
+
+.form_title
+{
+    font-family: "Open Sans";
+    font-size: 36px;
+    font-weight: 400;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 30px;
+    color: #000;
+    line-height: 42px;
+}
+
+.form_title:after
+{
+    margin-right: 0;
+    margin-left: 24px;
+}
+
+
+.field_title
+{
+    font: 20px/32px "Open Sans";
+    color: #333;
+    text-align: left;
+    margin-left: 690px;
+    margin-top: 35px;
+}
+
+.required:after
+{
+    content: "*";
+    color: #ff0000;
+}
+
+.feetback_form
+{
+    cursor: default;
+    margin: 30px auto;
+    text-align: left;
+    width: 660px;
+    height: 903px;
+    border-radius: 10px;
+    position: relative;
+    box-sizing: border-box;
+    padding: 40px 60px;
+    background: #fff;
+}
+
+.feetback_form .close
+{
+    font-size: 60px;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 0;
+    right: 30px;
+    cursor: pointer;
+}
+
+.feetback_form label
+{
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-family: "Open Sans";
+    line-height: 1.6;
+}
+
+.feetback_form input[type='text'],
+.feetback_form select,
+.feetback_form textarea
+{
+    display: block;
+    box-sizing: border-box;
+    padding-left: 18px;
+    border-radius: 3px;
+    border: 2px solid #c9c9c9;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 22px;
+    font-size: 18px;
+    line-height: 32px;
+}
+
+.feetback_form input:hover,
+.feetback_form select:hover,
+.feetback_form textarea:hover
+{
+    border-color:#a6a6a6;
+    outline: none;
+}
+
+.feetback_form input:focus,
+.feetback_form select:focus,
+.feetback_form textarea:focus
+{
+    border-color: #15a98c;  /*f12424 красный*/
+    outline: none;
+}
+
+.feetback_form textarea.empty,
+.feetback_form input[type='text'].empty
+{
+    border-color: #f12424;
+}
+
+.feetback_form select
+{
+    cursor: pointer;
+    -webkit-appearance: none;
+    background: url("../image/arrow_down.png") no-repeat 97% 18px;
+    margin-top: 1.8px;
+}
+
+.feetback_form .comment_label
+{
+    margin-top: 31px;
+}
+
+.feetback_form textarea
+{
+    height: 150px;
+    resize: none;
+}
+
+.feetback_form .checkbox_label
+{
+    width: auto;
+    cursor: pointer;
+}
+
+.feetback_form input[type='submit']
+{
+    display: inline-block;
+    height: 50px;
+    width: 220px;
+    cursor: pointer;
+    color: #fff;
+    background: #15a98c;
+    border-radius: 4px;
+    font-size: 19px;
+    font-family: "Georgia";
+    margin-top: 27px;
+}
+
+.feetback_form input[type='submit']:hover
+{
+    background-color: #098d72;
+}
+
+
+.pol
+{
+    font-size: 20px;
+    font-family: "Open Sans";
+    line-height: 1.6;
+    margin-top: 40px;
+    margin-bottom: 4.5px;
+}
+
+@media screen and (max-width: 1220px)
+{
+    .container_serials_content
+    {
+        padding-left: 20px;
+    }
+
+    .container_serial_info_block
+    {
+        width: 24%;
+        margin-right: 1%;
+    }
+}
+
+@media screen and (max-width: 1036px)
+{
+    .container_serials_content
+    {
+        padding-left: 120px;
+    }
+
+    .container_serial_info_block
+    {
+        width: 35%;
+        margin-right: 15%;
+        margin-bottom: 30px;
+    }
+}
+
+
+@media screen and (max-width: 690px)
+{
+    .feetback_form
+    {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 625px)
+{
+    .rigt_column
+    {
+        box-sizing: border-box;
+        margin-right: 0;
+    }
+
+    .text
+    {
+        font-size: 16px;
+        line-height: 28px;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 530px)
+{
+    .feetback_form
+    {
+        padding: 10px 4% ;
+    }
+}
+
+@media screen and (max-width: 355px)
+{
+    .feetback_form .form_title
+    {
+        font-size: 30px;
+        margin-top: 5px;
+        margin-bottom: 25px;
+    }
+
+    .feetback_form .close
+    {
+        right: 15px;
+    }
+
+    .feetback_form .gender_container label
+    {
+        width: 100px;
+    }
+}
+
+.display_none
+{
+    display: none;
+}
+
+/*
+#back-top{
+position:fixed;
+display:none;
+}*/
+
+.display_block
+{
+    display: block!important;
+}
+
+.fixed
+{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    z-index: 4;
+    background-color: #fff;
+}
+
+.active
+{
+    color: #009;
+}
+
+
+.form_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    text-align: center;
+    background: rgba(0,0,0,.75);
+    cursor: pointer;
+    z-index: 13;
+}
+
+.form_container:before {
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    content: '';
+}
+
+.form_container form {
+    position: relative;
+    display: inline-block;
+    white-space: normal;
+    vertical-align: middle;
+    text-align: left;
+    cursor: auto;
+    width: 540px;
+    margin: 20px auto;
+    padding: 42px 60px 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px;
+}
+
+.form_container form .close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 24px;
+    height: 24px;
+    color: #464646;
+    font-size: 50px;
+    line-height: .5;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+.form_container form .form_header {
+    margin-bottom: 35px;
+    font-family: "Open Sans",sans-serif;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 42px;
+    color: #333;
+}
+
+.form_container form .field, .form_container form .field_label, .form_container form .radio_label {
+    font-family: "Open Sans",sans-serif;
+    font-weight: 400;
+    line-height: 32px;
+}
+
+.form_container form .field_label {
+    font-size: 20px;
+    color: #333;
+    margin-left: -1px;
+    margin-bottom: 6px;
+}
+
+.form_container form .field_label.require::after {
+    content: ' *';
+    color: #ee0707;
+}
+
+.form_container form .field {
+    font-size: 14px;
+    color: #555;
+    display: block;
+    padding-left: 18px;
+    margin: 3px 0 26px;
+    box-sizing: border-box;
+    border: 2px solid #c9c9c9;
+    border-radius: 3px;
+    width: 100%;
+    height: 50px;
+    caret-color: #aaa;
+    transition: border-color .3s;
+}
+
+.form_container form .field.email_field {
+    margin-bottom: 25px;
+}
+
+.form_container form .message_field {
+    height: 150px;
+    margin-bottom: 50px;
+    padding-top: 10px;
+    resize: none;
+}
+
+.form_container form .form_button {
+    cursor: pointer;
+    padding-left: 62px;
+    color: #f5f5f5;
+}
+
+.button {
+    width: 220px;
+    height: 50px;
+    box-sizing: border-box;
+    background-color: #15a98c;
+    border: 1px;
+    border-radius: 5px;
+    text-align: left;
+    transition: background-color .3s;
+    display: inline-block;
+}
+
+.button, .header .top_menu .navigation .navigation_item .link {
+    font-family: "Georgia",sans-serif;
+    font-size: 19px;
+    line-height: 32px;
+    text-decoration: none;
+}
+
+.container_form .field:active
+{
+    border: 2px solid #15a98c;
+}
+
+.style_modal_add_films
+{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    z-index: 11;
+    overflow: auto;
+}
+
+.add_films_form label
+{
+    font-size: 20px;
+    line-height: 32px;
+    color: rgb(51,51,51);
+    font-family: "Open Sans", '400';
+}
+
+.add_films_form input[type='text'],
+textarea
+{
+    font-size: 18px;
+    line-height: 32px;
+    color: rgb(85,85,85);
+    font-family: "Open Sans";
+
+    margin: 0 auto;
+    padding-left: 15px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 2px solid #c9c9c9;
+
+    height: 50px;
+    max-width: 540px;
+    width: 100%;
+}
+
+.add_films_form input:hover,
+textarea:hover
+{
+    border: 2px solid #a6a6a6;
+}
+
+.add_films_form input:focus,
+textarea:focus
+{
+    border: 2px solid #15a98b;
+    outline: none;
+}
+
+.add_films_form input[type='submit']
+{
+    font-size: 19px;
+    line-height: 32px;
+    color: rgb(245,245,245);
+    font-family: "Georgia";
+    cursor: pointer;
+
+    border: none;
+    width: 220px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #15a98b;
+}
+
+.add_films_form input[type='submit']:hover
+{
+    background-color: #098d71;
+}
+
+.add_films_form  input.error
+{
+    border: 2px solid #f12424;
+}
+
+.add_films_form  textarea.error
+{
+    border: 2px solid #f12424;
+}
+
+.style_class
+{
+    float: right;
+    position: relative;
+    bottom: 20px;
+    left: 30px;
+    cursor: pointer;
+}
+

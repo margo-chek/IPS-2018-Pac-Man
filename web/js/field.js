@@ -14,7 +14,7 @@ export default function Field() {
 
         MATRIX.forEach((item) => {
             item.forEach((number) => {
-                CTX.fillStyle = number === 1 ? '#62016D' : '#2D9B27';
+                CTX.fillStyle = number === 1 ? '#9717ff' : '#6cff3f';
                 CTX.fillRect(blockageX, blockageY, this.blockageWidth, this.blockageHeight);
                 blockageX += dBlockageX;
             });

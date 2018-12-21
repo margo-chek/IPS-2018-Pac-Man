@@ -4,6 +4,7 @@ import Hero from './hero.js';
 import Fruit from './fruit.js';
 import Enemy from './enemy.js';
 import Field from './field.js';
+//import Popup from './popup.js';
 import PointCounter from './pointCounter.js';
 import * as Const from './const.js';
 

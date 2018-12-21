@@ -1,6 +1,4 @@
-{% extends "layout.twig" %}
-
-{% block title %}pacman{% endblock %}
+{% extends('layout.html.twig') %}
 
 {% block content %}
 
@@ -23,7 +21,6 @@
                         <tr>
                         <th scope="row">{{ item.position }}</th>
                         <td>{{ item.name }}</td>
-                        <td>07-11-2018 22:03</td>
                         <td>{{ item.score }}</td>
                         </tr>
 

@@ -68,19 +68,6 @@
         return $_SESSION['user_id'];
     }
     
-    function isAdmin() 
-    {
-        if (!isUserLogin()) {
-            return false;
-        }
-        $userId = $_SESSION['user_id'];
-        $query = 'SELECT rights FROM users WHERE id = ' . $userId;
-        $result = dbQueryGetResult($query);
-        if (!empty($result)) {
-            return ($result[0]["rights"] == "admin");
-        }
-    }
-    
     function logout()
     {
         $_SESSION['user_id'] = null;
@@ -91,32 +78,6 @@
     {
         $query = 'SELECT id, name, subname, email, rights, ban FROM users';
         return dbQueryGetResult($query);
-    }
-    
-    function isUserBan($id)
-    {
-        $query = 'SELECT ban FROM users 
-                  WHERE id = "' . dbQuote($id) . '"';
-        $result = dbQueryGetResult($query);
-        if (empty($result )) {
-            return false;
-        }
-        return ($result[0]['ban'] == '1');
-    }
-    
-    function flipBan($id)
-    {
-        if (isUserBan($id)) { 
-            $query = 'UPDATE users 
-                      SET ban = "0" 
-                      WHERE id = "' . dbQuote($id) . '"';
-        } else {
-            $query = 'UPDATE users 
-                      SET ban = "1" 
-                      WHERE id = "' . dbQuote($id) . '"';
-        }
-        
-        return dbQuery($query);
     }
     
     function getUserRight($id){
@@ -186,28 +147,7 @@
         return true;
     }
     
-    function deleteAvatar()
-    {
-        $query = 'UPDATE users
-                    SET
-                        img = NULL
-                    WHERE
-                        id = "' . dbQuote($_SESSION['user_id']) . '"';
-        dbQuery($query);
-    }
-    function updateUserImg($userData)
-    {   
-        $image = dbQuote($userData['path']);
-        $query = 'UPDATE users
-                  SET
-                      img = "' . $image . '"
-                  WHERE
-                      id = "' . dbQuote($userData['id']) . '"';
-                      
-        return dbQuery($query);
-    }
-    
-    
+
     function getUserData($id)
     {
         if ($id == NULL) {

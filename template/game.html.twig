@@ -1,0 +1,60 @@
+{% extends('layout.html.twig') %}
+
+{% block content %}
+    <div class="container containerMenu my-4">
+    <div class="row justify-content-end">
+      <div class=" menu col-6">
+        <div class="imgMainName"></div>
+      </div>
+      <div class="col-6 my-4">
+        <div class="row">
+          <div class="col">
+            <a href="records.php"><button type="button" class="btn btn-info buttonIndex">Таблица рекордов</button></a>
+          </div>
+          <div class="col">
+              <a href="index.php"><button type="button" class="btn btn-danger buttonIndex">Выйти</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col align-self-center count col-6">
+        <div class="pointIndex">Счет: <span id="counter" class="counter"></span></div>
+      </div>
+      <div class="col align-self-center"></div>
+    </div>
+  </div>
+  <div class="container containerCanvas">
+    <canvas id="Canvas"></canvas>
+  </div>
+
+  <div class="container pop-up-window">
+    <h2>Modal Example</h2>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Игра завершена</h4>
+          </div>
+          <div class="modal-body">
+            <p>Вы набрали {{scope}} очков</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <script type="module" src="web/js/main.js"></script>
+
+{% endblock %}

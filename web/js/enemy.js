@@ -357,7 +357,8 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     };
 
     this.draw = function() {
-        CTX.drawImage(IMAGE, Enemy.START, Enemy.START, Enemy.SIZE, Enemy.SIZE, this.x, this.y, Enemy.WIDTH, Enemy.HEIGHT);
+        CTX.drawImage(IMAGE, Enemy.START, Enemy.START, Enemy.SIZE, Enemy.SIZE, this.x,
+            this.y, Enemy.WIDTH, Enemy.HEIGHT);
     };
 
     this.initialize(field, enemyDirection);
