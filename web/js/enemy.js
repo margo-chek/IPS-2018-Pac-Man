@@ -8,7 +8,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
-    const IMAGE = new Image(504, 504);
+    const IMAGE = new Image(Enemy.SIZE, Enemy.SIZE);
     IMAGE.src = './image/ene.png';
 
     this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
@@ -199,14 +199,14 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
 
     const fixWhenOXCollision = function(indexes, field) {
         this.x = indexes.column * field.blockageWidth;
-        if (this.direction.left) this.x += 20;
+        if (this.direction.left) this.x += field.blockageWidth;
 
         getRandomDirection(field);
     }.bind(this);
 
     const fixWhenOYCollision = function(indexes, field) {
         this.y = indexes.row * field.blockageHeight;
-        if (this.direction.up) this.y += 20;
+        if (this.direction.up) this.y += field.blockageHeight;
 
         getRandomDirection(field);
     }.bind(this);
@@ -357,7 +357,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     };
 
     this.draw = function() {
-        CTX.drawImage(IMAGE, 0, 0, 504, 504, this.x, this.y, Enemy.WIDTH, Enemy.HEIGHT);
+        CTX.drawImage(IMAGE, Enemy.START, Enemy.START, Enemy.SIZE, Enemy.SIZE, this.x, this.y, Enemy.WIDTH, Enemy.HEIGHT);
     };
 
     this.initialize(field, enemyDirection);
@@ -365,6 +365,8 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
 
 Enemy.WIDTH = 20;
 Enemy.HEIGHT = 20;
+Enemy.START = 0;
+Enemy.SIZE = 504;
 
 const getStartEnemies = function(field) {
     return [

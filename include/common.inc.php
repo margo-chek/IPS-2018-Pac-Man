@@ -11,6 +11,6 @@
     //require_once('database.inc.php');
     require_once('../vendor/autoload.php');
     require_once('template.inc.php');
-    require_once 'autoloader.inc.php';
+    require_once('autoloader.inc.php');
 
     //dbInitialConnect(); //подключение к базе данных

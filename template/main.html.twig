@@ -1,0 +1,33 @@
+{% extends("layout.html.twig") %}
+
+{% block content %}
+    <div class="container containerMainPage my-5">
+            <div class="row justify-content-end">
+                <div class="col-6">
+                    <div class="imgMainName"></div>
+                    <!-- <h1 class="mainTitle">Real Pacman!</h1> -->
+                </div>
+                <div class="col-6 my-4">
+                    <a href="index.php"><button type="button" class="btn btn-success buttonMain">Играть</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="container containerMainPage">
+            <div class="row justify-content-between">
+                <div class="col-md-5">
+                    <h2>Как играть</h2>
+                    Экран игры представляет собой лабиринт, в коридорах которого находятся бонусы. Задача игрока: управляя
+                    Пакманом, съесть все бонусы в лабиринте, избегая встречи с привидениями, которые носятся по лабиринту.
+                    В начале игры призраки спавнятся в рандомных местах карты и начинают бегать. После съедения всех бонусов,
+                    появляется их новая порция в других местах, и игра продолжается. Пакман реальный, поэтому если привидение
+                    дотронется до него, он умирает, и игра заканчивается. После набора каждых 300 очков появляется еще один
+                    призрак и остаться в живых становится все сложнее.
+                </div>
+                <div class="col-md-6">
+                    <div class="imgMainPage"></div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
