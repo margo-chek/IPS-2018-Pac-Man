@@ -1,52 +1,66 @@
 {% extends('layout.html.twig') %}
 
 {% block content %}
-    {% include 'message.twig' %}
-        <div class="row">
-          <div class="col-md-1">
+  <div class="container containerMenu my-4">
+      <div class="row justify-content-start">
+        <div class="menu col-6">
+          <div class="imgMainName"></div>
+        </div>
+        <div class="col-4 my-4">
+          <div class="row">
+            <div class="col-sm-3">
+              <button type="button" class="btn btn-danger  btn-block buttonRecord" onclick="window.location = 'index.php'">Выйти</button>
+            </div>
           </div>
-          <div class="col-md-5 ">
-            <form action="actions/auth_user.php" method="post">
-              <h2>Вход в учетную запись</h2>
-              <div class="container containerMainPage">
-                <div class="form-group" >
-                  <label for="email_login">E-mail</label>
-                  <input type="email" class="form-control" id="email_login" placeholder="Введите e-mail" name="email" autocomplete="off" required>
-                </div>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      {% include 'message.twig' %}
+          <div class="row my-4">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5 ">
+              <form action="actions/auth_user.php" method="post">
+                <h2>Вход в учетную запись</h2>
+                <div class="container containerMainPage">
+                  <div class="form-group" >
+                    <label for="email_login">E-mail</label>
+                    <input type="email" class="form-control" id="email_login" placeholder="Введите e-mail" name="email" autocomplete="off" required>
+                  </div>
 
-                <div class="form-group">
-                  <label for="password">Пароль</label>
-                  <input type="password" class="form-control" id="password" placeholder="Введите пароль" name="pass" required>
+                  <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" class="form-control" id="password" placeholder="Введите пароль" name="pass" required>
+                  </div>
+                  <button type="submit" class="btn btn-success">Войти</button>
                 </div>
-                <button type="submit" class="btn btn-success">Войти</button>
-              </div>
-            </form>
+              </form>
+            </div>
+            <div class="col-md-5">
+              <form action="actions/create_new_user.php" method="post">
+                <h2>Регистрация новой учетной записи</h2>
+                <div class="container containerMainPage">
+                  <div class="form-group">
+                    <label for="email_registration">E-mail</label>
+                    <input type="email" class="form-control" id="email_registration" placeholder="Введите e-mail" name="email" autocomplete="off" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="password_registration">Придумайте пароль</label>
+                    <input type="password" class="form-control" id="password_registration" placeholder="Введите пароль" name="pass1" required>
+                    <span class="text-info">Чувствителен к регистру</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="password_registration_again">Повторите пароль</label>
+                    <input type="password" class="form-control" id="password_registration_again" placeholder="Еще раз введите пароль"  name="pass2" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="userName">Ваше имя</label>
+                    <input type="text" class="form-control" id="userName" placeholder="Введите имя"  name="name" autocomplete="off" required>
+                  </div>
+                  <button type="sumbit" class="btn btn-success">Зарегистрироваться</button>
+                </div>
+              </form>
+            </div>
           </div>
-          <div class="col-md-5">
-            <form action="actions/create_new_user.php" method="post">
-              <h2>Регистрация новой учетной записи</h2>
-              <div class="container containerMainPage">
-                <div class="form-group">
-                  <label for="email_registration">E-mail</label>
-                  <input type="email" class="form-control" id="email_registration" placeholder="Введите e-mail" name="email" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                  <label for="password_registration">Придумайте пароль</label>
-                  <input type="password" class="form-control" id="password_registration" placeholder="Введите пароль" name="pass1" required>
-                  <span class="text-info">Чувствителен к регистру</span>
-                </div>
-                <div class="form-group">
-                  <label for="password_registration_again">Повторите пароль</label>
-                  <input type="password" class="form-control" id="password_registration_again" placeholder="Еще раз введите пароль"  name="pass2" required>
-                </div>
-                <div class="form-group">
-                  <label for="userName">Ваше имя</label>
-                  <input type="text" class="form-control" id="userName" placeholder="Введите имя"  name="name" autocomplete="off" required>
-                </div>
-                <button type="sumbit" class="btn btn-success">Зарегистрироваться</button>
-              </div>
-            </form>
-          </div>
-        </div>    
-    
+      </div>
 {% endblock %}
