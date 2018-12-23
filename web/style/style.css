@@ -26,6 +26,10 @@ h2 {
     font-size: 30px;
 }
 
+.headerMain {
+    height: 100px;
+}
+
 .containerMainPage {
     /*display: block;
     flex-direction: row;

@@ -3,12 +3,14 @@
 {% block content %}
     <div class="container containerMainPage my-5">
             <div class="row justify-content-end">
-                <div class="col-6">
+                <div class="col-6 headerMain">
                     <div class="imgMainName"></div>
-                    <!-- <h1 class="mainTitle">Real Pacman!</h1> -->
                 </div>
-                <div class="col-6 my-4">
-                    <a href="game.php"><button type="button" class="btn btn-success buttonMain">Играть</button></a>
+                <div class="col-6">
+                    <a href="login.php"><button type="button btn-sm btn-success" class="btn btn-success btn-lg float-right">Играть</button></a>
+                    {% if isUserLogin %}
+                        <a href="exit.php"><button type="button btn-sm btn-danger" class="btn btn-danger btn-lg float-right">Выйти из учетки</button></a>
+                    {% endif %}
                 </div>
             </div>
         </div>

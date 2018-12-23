@@ -7,11 +7,11 @@
     }
     
     
-    function createUser($email, $passHash, $name, $subname)
+    function createUser($email, $passHash, $name)
     { 
-        $query = "INSERT INTO users (email, passHash, Name, Subname) 
+        $query = "INSERT INTO users (email, passHash, Name)
                   VALUES('" . dbQuote($email) . "', '" . dbQuote($passHash) . "', 
-                  '" . dbQuote($name) . "', '" . dbQuote($subname) . "')";
+                  '" . dbQuote($name) . "')";
         return dbQuery($query);
     }
     

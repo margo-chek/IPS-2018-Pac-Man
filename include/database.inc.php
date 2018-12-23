@@ -2,12 +2,11 @@
 $g_dbLink = null;
 
 //создает подключение к БД
-function dbInitionConnect()
+function dbInitialConnect()
 {
     global $g_dbLink;
     $g_dbLink = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
     $error = mysqli_connect_error();
-
     if ($error) {
         die('Unable to connect to DB');
     }

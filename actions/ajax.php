@@ -1,10 +1,10 @@
 <?php
     require_once('../include/common.inc.php');
         
-    if (empty($_POST["book_id"])) {
+    if (empty($_POST["score_id"])) {
         die();
     }
-    $bookId = $_POST["book_id"];
+    $bookId = $_POST["score_id"];
     
     if (isUserLogin()) {
         $userId = $_SESSION['user_id'];
@@ -13,5 +13,5 @@
     }
     
     
-    likeBook($userId, $bookId);
-    echo json_encode(getCountLikesBookById($bookId));
+    likeBook($userId, $score_id);
+    echo json_encode(getCountLikesBookById($score_id));

@@ -2,40 +2,41 @@
 
 {% block content %}
 
-    <div class="container personal_accaunt text_color">
+    <div class="container ">
         <div class="row">
-            <h1 class="personal_accaunt_header">Лучшие результаты</h1>
+            <h2>Лучшие результаты</h2>
         </div>
         <div class="row">
             <div class="col-sm-2"></div>
-            <table class="table col-sm-8">
-                <thead>
+            <div class="container containerMainPage">
+                <table class="table col-sm-8">
+                    <thead>
                     <tr>
-                    <th>#</th>
-                    <th>Логин</th>
-                    <th>Очки</th>
+                        <th>#</th>
+                        <th>Логин</th>
+                        <th>Очки</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {% for item in records %}
                         <tr>
-                        <th scope="row">{{ item.position }}</th>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.score }}</td>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.score }}</td>
                         </tr>
 
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="row">
-            <div class="col-sm-7"></div>
-            <div class="col-sm-1"></div>
-            <button type="button" class="btn btn-outline-primary btn-block btn_menu col-sm-2" onclick="window.location = 'personal_accaunt.php'">
-                Выход
-            </button>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-success  btn-block buttonIndex" onclick="window.location = 'game.php'">Вернуться в игру</button>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-danger  btn-block buttonIndex" onclick="window.location = 'index.php'">Выйти</button>
+            </div>
         </div>
-
     </div>
-    
 {% endblock %}
