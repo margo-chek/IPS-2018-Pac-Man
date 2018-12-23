@@ -48,13 +48,20 @@ h2 {
 
 .buttonMain {
     float: right;
-    padding: 10px 58px;
-    font-size: 30px;
+    padding: 14px 30px;
+    margin: 20px;
+    font-size: 20px;
 }
 
 .buttonIndex {
     padding: 8px 25px;
     font-size: 20px;
+}
+
+.buttonRecord {
+    padding: 10px 12px;
+    font-size: 20px;
+    width: auto;
 }
 
 .buttonInGame {
@@ -167,96 +174,17 @@ color: gray;
 {
     height: 210px;
 }
-
-.book_mini
-{
-    height: 100%;
-    overflow: hidden;
-}
-
-
-.book_mini_cover
-{
-    width: 60%;
-}
-
-.book_cover
-{
-    height: 255px;
-}
-
-.avatar_btn
-{
-    width: auto;
-}
-
-.book_mini
-{
-    height: 320px;
-}
 }
 
 @media only screen and (max-width: 766px)
 {
-.book_block
-{
-    text-align: center;
-    max-width: 50%;
-}
-
-.book_mini
-{
-    max-width: 50%;
-    height: 250px;
-    overflow: hidden;
-}
-
-.book_cover
-{
-    margin: 0 auto;
-}
-
 .add_comment_area
 {
     height: 210px;
 }
 
-.book_big_cover
-{
-    width: 250px;
-}
-
 .button_group
 {
     width: 230px;
-}
-
-.book_mini_cover
-{
-    width: 40%;
-}
-
-.avatar_btn
-{
-    width: auto;
-}
-}
-
-@media only screen and (max-width: 615px) {
-.book_block
-{
-    max-width: none;
-}
-
-.book_mini
-{
-    max-width: none;
-    height: auto;
-    overflow: hidden;
-}
-
-.avatar_btn
-{
-    width: auto;
 }
 }

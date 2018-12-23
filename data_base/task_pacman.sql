@@ -4,44 +4,52 @@ DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci; 
 USE pacman; // выбираем ее для использования
 
-CREATE TABLE results
-(user_id SERIAL,
-nic_name VARCHAR(255) DEFAULT '',
-score_date INT,
-PRIMARY KEY (user_id)
+CREATE TABLE users
+(id SERIAL,
+email VARCHAR(255),
+passHash VARCHAR(255),
+name VARCHAR(255),
+PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-ALTER TABLE customer 
-MODIFY passport_code varchar(255);
+SHOW tables; // посмотреть все таблицы
+
+SELECT * FROM users;
+
+SHOW COLUMNS FROM users;
+
+CREATE TABLE results
+(id SERIAL,
+user_id VARCHAR(255),
+name VARCHAR(255),
+score INT DEFAULT 0,
+PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+SHOW COLUMNS FROM results;
+
+ALTER TABLE results
+MODIFY name VARCHAR(255);
 
 DROP TABLE results;  // удалить таблицу
 
-CREATE TABLE offers
-(offers_id SERIAL,
-dvd_id INT,
-customer_id INT,
-offers_date DATE,
-return_date DATE,
-PRIMARY KEY (offers_id),
-FOREIGN KEY (dvd_id) REFERENCES dvd (dvd_id),
-FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
 INSERT INTO results
-(user_id, nic_name, score_date)
+(user_id, score)
 VALUES
-('1', 'ABBA', '2008'),
-('2', 'Beatles', '2010'),
-('3', 'Depeche Mode', '2010'),
-('4', 'Машина времени', '2016'),
-('5', 'Scorpions', '2017');
+('1', '2008'),
+('2', '10');
 
 SELECT * FROM results;  // посмотреть таблицу
 DROP TABLE results;  // удалить таблицу
 
-SELECT 
-    COUNT(hdd_Gb) AS count,
-    hdd_Gb
-FROM results
-GROUP BY (nic_name)
-ORDER BY (score_date);
+SELECT FROM results ORDER BY (score) DESC LIMIT 10; // по убыванию 10 показать
+
+SELECT FROM results
+LEFT JOIN users
+ON users.id = results.user_id
+ORDER BY (score) DESC LIMIT 10;
+
+INSERT INTO results
+(user_id, score)
+VALUES
+('1', '3010');

@@ -1,10 +1,27 @@
 {% extends('layout.html.twig') %}
 
 {% block content %}
-
-    <div class="container ">
+    <div class="container containerMenu my-4">
+        <div class="row justify-content-start">
+            <div class="menu col-4">
+                <div class="imgMainName"></div>
+            </div>
+            <div class="col-8 my-4">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-success  btn-block buttonRecord" onclick="window.location = 'game.php'">Вернуться в игру</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-danger  btn-block buttonRecord" onclick="window.location = 'index.php'">Выйти</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
         <div class="row">
-            <h2>Лучшие результаты</h2>
+            <div class="col-6 my-4">
+                <h2>Лучшие результаты</h2>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-2"></div>
@@ -28,14 +45,6 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-success  btn-block buttonIndex" onclick="window.location = 'game.php'">Вернуться в игру</button>
-            </div>
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-danger  btn-block buttonIndex" onclick="window.location = 'index.php'">Выйти</button>
             </div>
         </div>
     </div>
