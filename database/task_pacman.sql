@@ -36,8 +36,9 @@ DROP TABLE results;  // удалить таблицу
 INSERT INTO results
 (user_id, score)
 VALUES
-('1', '2008'),
-('2', '10');
+('5', '2008'),
+('4', '2008'),
+('3', '120');
 
 SELECT * FROM results;  // посмотреть таблицу
 DROP TABLE results;  // удалить таблицу

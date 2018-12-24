@@ -56,6 +56,11 @@ function initializeGameObjects() {
     return gameObjects;
 }
 
+function popupEndGame() {
+    const infoWindow = document.getElementById('winModal');
+    infoWindow.style.display = 'block';
+}
+
 function main() {
     const gameObjects = initializeGameObjects();
     const deltaTime = 1 / 60;
@@ -63,7 +68,7 @@ function main() {
     redraw(gameObjects);
     const animateFn = () => {
         const isEndGame = update(gameObjects, deltaTime);
-        if (isEndGame) return;
+        if (isEndGame) return popupEndGame();
 
         if (gameObjects.fruits.every((fruit) => !fruit)) gameObjects.fruits = Fruit.initializeFruits();
 

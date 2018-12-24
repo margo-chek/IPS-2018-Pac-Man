@@ -4,12 +4,12 @@
     if (empty($_POST["score_id"])) {
         die();
     }
-    $bookId = $_POST["score_id"];
+    $scoreId = $_POST["score_id"];
     
     if (isUserLogin()) {
         $userId = $_SESSION['user_id'];
     } else {
-        redirect($from);
+        redirect('index.php');
     }
     
     

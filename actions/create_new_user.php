@@ -25,3 +25,5 @@
     } else {
         redirect('../login.php?result=' . ERR_USER_REGISTRATION_FAIL);
     }
+
+    echo "Войдите в учетную запись";
