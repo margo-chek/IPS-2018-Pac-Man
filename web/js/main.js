@@ -4,7 +4,6 @@ import Hero from './hero.js';
 import Fruit from './fruit.js';
 import Enemy from './enemy.js';
 import Field from './field.js';
-//import Popup from './popup.js';
 import PointCounter from './pointCounter.js';
 import * as Const from './const.js';
 
@@ -28,6 +27,8 @@ function addNewEnemy(hero, enemies, field) {
         enemyY: y * field.blockageHeight,
         field: field,
     }));
+
+    console.log(enemies[enemies.length - 1]); debugger;
 }
 
 function update({hero, enemies, fruits, field, pointCounter}, deltaTime) {
@@ -59,6 +60,20 @@ function initializeGameObjects() {
 function popupEndGame() {
     const infoWindow = document.getElementById('winModal');
     infoWindow.style.display = 'block';
+
+    sendScore();
+}
+
+function sendScore() {
+    $.ajax({
+        url: 'actions/saveScore.php',
+        type: 'POST',
+        dataType: 'json',
+        data: ({score: $('#counter').text()}),
+        success: function(data) {
+            $('#counter').text(data);
+        },
+    });
 }
 
 function main() {

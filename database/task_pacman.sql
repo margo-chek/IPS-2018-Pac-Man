@@ -43,11 +43,17 @@ VALUES
 SELECT * FROM results;  // посмотреть таблицу
 DROP TABLE results;  // удалить таблицу
 
-SELECT FROM results ORDER BY (score) DESC LIMIT 10; // по убыванию 10 показать
+SELECT * FROM results ORDER BY (score) DESC LIMIT 10; // по убыванию 10 показать
 
-SELECT FROM results
+SELECT * FROM results
 LEFT JOIN users
 ON users.id = results.user_id
+ORDER BY (score) DESC LIMIT 10;
+
+SELECT * FROM results
+LEFT JOIN users
+ON users.id = results.user_id
+GROUP BY users.name
 ORDER BY (score) DESC LIMIT 10;
 
 INSERT INTO results

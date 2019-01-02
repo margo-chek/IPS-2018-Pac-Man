@@ -10,3 +10,4 @@
     define("COVER_HAS_BEEN_ADD", 10);
     define("BAD_PASS", 13);
     define("COMMENT_WAS_ADD", 14);
+    define("CANT_SAVE_SCORE", 15);

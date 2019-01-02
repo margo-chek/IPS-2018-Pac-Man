@@ -320,7 +320,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     }.bind(this);
 
     const updatePosition = function(step) {
-        console.log(this);
+        // console.log(this);
         if (this.direction.OY) {
             if (this.direction.up) {
                 this.y -= step;
