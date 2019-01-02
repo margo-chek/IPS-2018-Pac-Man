@@ -66,7 +66,7 @@ function popupEndGame() {
 
 function sendScore() {
     $.ajax({
-        url: 'actions/saveScore.php',
+        url: 'actions/save_score.php',
         type: 'POST',
         dataType: 'json',
         data: ({score: $('#counter').text()}),
