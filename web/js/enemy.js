@@ -1,10 +1,10 @@
 'use strict';
 import {CTX, MATRIX} from './const.js';
 
-let enemyId = 0;
+//let enemyId = 0;
 
 export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
-    this.id = 'enemy' + (++enemyId);
+    //this.id = 'enemy' + (++enemyId);
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
@@ -152,7 +152,8 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         if (!directionsArray.length) return setReflectiveDirection();
 
         this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
-        const index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
+        const index = Math.round(Math.random() * (directionsArray.length - 1));
+        // const index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
         setDirection(directionsArray[index]);
     }.bind(this);
 
@@ -230,6 +231,26 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     }.bind(this);
 
     const chooseNewOXDirection = function() {
+        const directions = ['up', 'down'];
+
+        const index = Math.round(Math.random());
+        setDirection(directions[index]);
+
+        this.direction.OX = true;
+        this.direction.OY = false;
+    }.bind(this);
+
+    const chooseNewOYDirection = function() {
+        const directions = ['left', 'right'];
+
+        const index = Math.round(Math.random());
+        setDirection(directions[index]);
+
+        this.direction.OX = false;
+        this.direction.OY = true;
+    }.bind(this);
+    /*
+    const chooseNewOXDirection = function() {
         if (!this.direction.left && !this.direction.right) {
             const directions = ['left', 'right'];
             const index = Math.round(Math.random());
@@ -259,15 +280,16 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         this.direction.OX = false;
         this.direction.OY = true;
     }.bind(this);
+    */
 
     const chooseNewDirection = function() {
         if (this.direction.OX) {
-            chooseNewOXDirection();
+            chooseNewOYDirection();
 
             return;
         }
 
-        chooseNewOYDirection();
+        chooseNewOXDirection();
     }.bind(this);
 
     const doCanChangeDirectionToOX = function(collideDirections) {
@@ -332,11 +354,13 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             return;
         }
 
-        if (this.direction.left) {
-            this.x -= step;
-        }
-        if (this.direction.right) {
-            this.x += step;
+        if (this.direction.OX) {
+            if (this.direction.left) {
+                this.x -= step;
+            }
+            if (this.direction.right) {
+                this.x += step;
+            }
         }
     }.bind(this);
 

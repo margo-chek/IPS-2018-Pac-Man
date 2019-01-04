@@ -91,14 +91,15 @@ export default function Field() {
         const freeCells = compileFreeCells(nonFreeCells);
 
         const cellsCount = freeCells.column.length - 1;
-        const index = Math.round(Math.random() * (0 - cellsCount)) + cellsCount;
+        const index = Math.round(Math.random() * cellsCount);
+        // const index = Math.round(Math.random() * (0 - cellsCount)) + cellsCount;
 
 
         const result = {
-            x: 7,//freeCells.column[index],
-            y: 14,//freeCells.row[index],
+            x: freeCells.column[index], // 7
+            y: freeCells.row[index], // 14
         };
-        console.log(result)
+        console.log(result);
 
         return result;
     };
