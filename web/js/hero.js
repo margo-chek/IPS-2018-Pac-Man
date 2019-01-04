@@ -8,7 +8,7 @@ export default function Hero({heroX, heroY, heroR}) {
     this.r = heroR;
     this.direction = {OY: true, OX: false};
 
-    const IMAGE = new Image(480, 480);
+    const IMAGE = new Image(Hero.SIZE, Hero.SIZE);
     IMAGE.src = '/pacman/image/pac.png';
 
     const isCollide = function(row, column) {
@@ -54,7 +54,7 @@ export default function Hero({heroX, heroY, heroR}) {
 
     const fixWhenOXCollision = function(indexes, field, collision) {
         this.x = indexes.column * field.blockageWidth;
-        if (this.direction.left) this.x += 20;
+        if (this.direction.left) this.x += field.blockageWidth;
 
         Const.KEYS_MAP.left = collision.left ? false : Const.KEYS_MAP.left;
         Const.KEYS_MAP.right = collision.right ? false : Const.KEYS_MAP.right;
@@ -62,7 +62,7 @@ export default function Hero({heroX, heroY, heroR}) {
 
     const fixWhenOYCollision = function(indexes, field, collision) {
         this.y = indexes.row * field.blockageHeight;
-        if (this.direction.up) this.y += 20;
+        if (this.direction.up) this.y += field.blockageHeight;
 
         Const.KEYS_MAP.up = collision.up ? false : Const.KEYS_MAP.up;
         Const.KEYS_MAP.down = collision.down ? false : Const.KEYS_MAP.down;
@@ -101,17 +101,17 @@ export default function Hero({heroX, heroY, heroR}) {
     const getObjectBounds = function(object) {
         return {
             left: object.x,
-            right: object.x + 20,
+            right: object.x + Hero.WIDTH,
             top: object.y,
-            bottom: object.y + 20,
+            bottom: object.y + Hero.HEIGHT,
         };
     };
 
     const compileHeroBounds = function() {
-        this.leftBound = this.x + (10 - this.r);
-        this.rightBound = this.x + 20 - (10 - this.r);
-        this.topBound = this.y + (10 - this.r);
-        this.bottomBound = this.y + 20 - (10 - this.r);
+        this.leftBound = this.x + (field.blockageWidth / 2 - this.r);
+        this.rightBound = this.x + Hero.WIDTH - (field.blockageWidth / 2 - this.r);
+        this.topBound = this.y + (field.blockageHeight / 2 - this.r);
+        this.bottomBound = this.y + Hero.HEIGHT - (field.blockageHeight / 2 - this.r);
     }.bind(this);
 
     const doCanChangeDirectionToOX = function(collideDirections) {
@@ -145,8 +145,8 @@ export default function Hero({heroX, heroY, heroR}) {
     }.bind(this);
 
     const updateDirection = function(field) {
-        if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
-        if (!Number.isInteger(this.y / 20) && this.direction.OY) return;
+        if (!Number.isInteger(this.x / field.blockageWidth) && this.direction.OX) return;
+        if (!Number.isInteger(this.y / field.blockageHeight) && this.direction.OY) return;
 
         const collideDirections = getCollideSides(field, 'direction');
 
@@ -207,12 +207,14 @@ export default function Hero({heroX, heroY, heroR}) {
     };
 
     this.draw = function() {
-        CTX.drawImage(IMAGE, 0, 0, 480, 480, this.x, this.y, Hero.WIDTH, Hero.HEIGHT);
+        CTX.drawImage(IMAGE, Hero.START, Hero.START, Hero.SIZE, Hero.SIZE, this.x, this.y, Hero.WIDTH, Hero.HEIGHT);
     };
 }
 
 Hero.WIDTH = 20;
 Hero.HEIGHT = 20;
+Hero.START = 0;
+Hero.SIZE = 480;
 
 Hero.initializeHero = function(field) {
     const heroX = (Const.CANVAS.width - Hero.WIDTH) / 2 + field.blockageWidth / 2;

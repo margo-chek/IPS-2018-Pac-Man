@@ -35,9 +35,9 @@ export default function Field() {
         }
 
         const row = Math.floor((elem.y + deltaOY) / this.blockageHeight);
-        const rowWide = Math.floor((elem.y + 19 + deltaOY) / this.blockageHeight);
+        const rowWide = Math.floor((elem.y + this.blockageHeight - 1 + deltaOY) / this.blockageHeight);
         const column = Math.floor((elem.x + deltaOX) / this.blockageWidth);
-        const columnWide = Math.floor((elem.x + 19 + deltaOX) / this.blockageWidth);
+        const columnWide = Math.floor((elem.x + this.blockageWidth - 1 + deltaOX) / this.blockageWidth);
 
         return {row: row, rowWide: rowWide, column: column, columnWide: columnWide};
     };

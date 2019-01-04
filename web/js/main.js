@@ -57,13 +57,6 @@ function initializeGameObjects() {
     return gameObjects;
 }
 
-function popupEndGame() {
-    const infoWindow = document.getElementById('winModal');
-    infoWindow.style.display = 'block';
-
-    sendScore();
-}
-
 function sendScore() {
     $.ajax({
         url: 'actions/save_score.php',
@@ -74,6 +67,13 @@ function sendScore() {
             $('#counter').text(data);
         },
     });
+}
+
+function popupEndGame() {
+    const infoWindow = document.getElementById('winModal');
+    infoWindow.style.display = 'block';
+
+    sendScore();
 }
 
 function main() {

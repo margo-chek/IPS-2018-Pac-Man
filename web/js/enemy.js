@@ -327,8 +327,8 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             this.directionChangeInterval = setInterval(() => chooseNewDirection(), 300);
         }
 
-        if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
-        if (!Number.isInteger(this.y / 20) && this.direction.OY) return;
+        if (!Number.isInteger(this.x / Enemy.WIDTH) && this.direction.OX) return;
+        if (!Number.isInteger(this.y / Enemy.HEIGHT) && this.direction.OY) return;
 
         const collideDirections = getCollideSides(field, 'direction');
 
