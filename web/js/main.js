@@ -57,23 +57,23 @@ function initializeGameObjects() {
     return gameObjects;
 }
 
-function sendScore() {
+function sendScore(score) {
     $.ajax({
         url: 'actions/save_score.php',
         type: 'POST',
         dataType: 'json',
-        data: ({score: $('#counter').text()}),
+        data: ({score}),
         success: function(data) {
             $('#counter').text(data);
         },
     });
 }
 
-function popupEndGame() {
+function popupEndGame(score) {
     const infoWindow = document.getElementById('winModal');
     infoWindow.style.display = 'block';
 
-    sendScore();
+    sendScore(score);
 }
 
 function main() {
@@ -83,7 +83,7 @@ function main() {
     redraw(gameObjects);
     const animateFn = () => {
         const isEndGame = update(gameObjects, deltaTime);
-        if (isEndGame) return popupEndGame();
+        if (isEndGame) return popupEndGame(gameObjects.pointCounter.getCurrPoints());
 
         if (gameObjects.fruits.every((fruit) => !fruit)) gameObjects.fruits = Fruit.initializeFruits();
 

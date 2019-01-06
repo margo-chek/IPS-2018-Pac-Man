@@ -53,16 +53,16 @@ export default function Hero({heroX, heroY, heroR}) {
     }.bind(this);
 
     const fixWhenOXCollision = function(indexes, field, collision) {
-        this.x = indexes.column * field.blockageWidth;
-        if (this.direction.left) this.x += field.blockageWidth;
+        this.x = indexes.column * Hero.WIDTH;
+        if (this.direction.left) this.x += Hero.WIDTH;
 
         Const.KEYS_MAP.left = collision.left ? false : Const.KEYS_MAP.left;
         Const.KEYS_MAP.right = collision.right ? false : Const.KEYS_MAP.right;
     }.bind(this);
 
     const fixWhenOYCollision = function(indexes, field, collision) {
-        this.y = indexes.row * field.blockageHeight;
-        if (this.direction.up) this.y += field.blockageHeight;
+        this.y = indexes.row * Hero.HEIGHT;
+        if (this.direction.up) this.y += Hero.HEIGHT;
 
         Const.KEYS_MAP.up = collision.up ? false : Const.KEYS_MAP.up;
         Const.KEYS_MAP.down = collision.down ? false : Const.KEYS_MAP.down;
@@ -108,10 +108,10 @@ export default function Hero({heroX, heroY, heroR}) {
     };
 
     const compileHeroBounds = function() {
-        this.leftBound = this.x + (field.blockageWidth / 2 - this.r);
-        this.rightBound = this.x + Hero.WIDTH - (field.blockageWidth / 2 - this.r);
-        this.topBound = this.y + (field.blockageHeight / 2 - this.r);
-        this.bottomBound = this.y + Hero.HEIGHT - (field.blockageHeight / 2 - this.r);
+        this.leftBound = this.x + (Hero.WIDTH / 2 - this.r);
+        this.rightBound = this.x + Hero.WIDTH - (Hero.WIDTH / 2 - this.r);
+        this.topBound = this.y + (Hero.HEIGHT / 2 - this.r);
+        this.bottomBound = this.y + Hero.HEIGHT - (Hero.HEIGHT / 2 - this.r);
     }.bind(this);
 
     const doCanChangeDirectionToOX = function(collideDirections) {
@@ -145,8 +145,8 @@ export default function Hero({heroX, heroY, heroR}) {
     }.bind(this);
 
     const updateDirection = function(field) {
-        if (!Number.isInteger(this.x / field.blockageWidth) && this.direction.OX) return;
-        if (!Number.isInteger(this.y / field.blockageHeight) && this.direction.OY) return;
+        if (!Number.isInteger(this.x / Hero.WIDTH) && this.direction.OX) return;
+        if (!Number.isInteger(this.y / Hero.HEIGHT) && this.direction.OY) return;
 
         const collideDirections = getCollideSides(field, 'direction');
 
@@ -217,8 +217,8 @@ Hero.START = 0;
 Hero.SIZE = 480;
 
 Hero.initializeHero = function(field) {
-    const heroX = (Const.CANVAS.width - Hero.WIDTH) / 2 + field.blockageWidth / 2;
-    const heroY = (Const.CANVAS.height - Hero.HEIGHT) / 2 - field.blockageHeight / 2;
+    const heroX = (Const.CANVAS.width - Hero.WIDTH) / 2 + Hero.WIDTH / 2;
+    const heroY = (Const.CANVAS.height - Hero.HEIGHT) / 2 - Hero.HEIGHT / 2;
 
     return new Hero({heroX, heroY, heroR: 6});
 };

@@ -30,7 +30,7 @@ Fruit.initializeFruits = function() {
         const cellNumber = Math.round(Math.random() * (1 - (row.length - 1))) + (row.length - 1);
         if (row[cellNumber] === 1) return;
 
-        const fruit = new Fruit({fruitX: cellNumber * field.WIDTH, fruitY: index * field.HEIGHT});
+        const fruit = new Fruit({fruitX: cellNumber * Fruit.WIDTH, fruitY: index * Fruit.HEIGHT});
         fruits.push(fruit);
     });
 

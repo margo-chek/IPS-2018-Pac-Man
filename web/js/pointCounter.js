@@ -23,6 +23,6 @@ export default function PointCounter() {
                 clearInterval(counterInterval);
                 counterInterval = null;
             }
-        });
+        }, 1);
     };
 }
