@@ -5,7 +5,7 @@ export default function PointCounter() {
     this.currPoints = 0;
 
     const counter = document.getElementById('counter');
-    counter.innerText = (this.currCount + '').padStart(8, '0');
+    counter.innerText = (this.currCount + '').padStart(PointCounter.NumberOfDigits, '0');
 
     this.getCurrPoints = function() {
         return this.currPoints;
@@ -13,11 +13,11 @@ export default function PointCounter() {
 
     let counterInterval = null;
     this.increasePoints = function() {
-        this.currPoints += 300;
+        this.currPoints += PointCounter.Score;
 
         if (counterInterval !== null) return;
         counterInterval = setInterval(() => {
-            counter.innerText = (++this.currCount + '').padStart(8, '0');
+            counter.innerText = (++this.currCount + '').padStart(PointCounter.NumberOfDigits, '0');
 
             if (this.currCount === this.currPoints) {
                 clearInterval(counterInterval);
@@ -26,3 +26,6 @@ export default function PointCounter() {
         }, 1);
     };
 }
+
+PointCounter.NumberOfDigits = 8;
+PointCounter.Score = 300;

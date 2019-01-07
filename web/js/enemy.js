@@ -1,10 +1,10 @@
 'use strict';
-import {CTX, MATRIX} from './const.js';
+import {CTX, MATRIX, wall} from './const.js';
 
-let enemyId = 0;
+// let enemyId = 0;
 
 export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
-    this.id = 'enemy' + (++enemyId);
+    // this.id = 'enemy' + (++enemyId);
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
@@ -234,11 +234,12 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             const directions = ['left', 'right'];
             const index = Math.round(Math.random());
             setDirection(directions[index]);
-        }
-        const directions = ['up', 'down'];
+        } else {
+            const directions = ['up', 'down'];
 
-        const index = Math.round(Math.random());
-        setDirection(directions[index]);
+            const index = Math.round(Math.random());
+            setDirection(directions[index]);
+        }
 
         this.direction.OX = true;
         this.direction.OY = false;
@@ -249,12 +250,11 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             const directions = ['up', 'down'];
             const index = Math.round(Math.random());
             setDirection(directions[index]);
+        } else {
+            const directions = ['left', 'right'];
+            const index = Math.round(Math.random());
+            setDirection(directions[index]);
         }
-
-        const directions = ['left', 'right'];
-
-        const index = Math.round(Math.random());
-        setDirection(directions[index]);
 
         this.direction.OX = false;
         this.direction.OY = true;
@@ -305,8 +305,8 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             this.directionChangeInterval = setInterval(() => chooseNewDirection(), 300);
         }
 
-        if (!Number.isInteger(this.x / 20) && this.direction.OX) return;
-        if (!Number.isInteger(this.y / 20) && this.direction.OY) return;
+        if (!Number.isInteger(this.x / wall) && this.direction.OX) return;
+        if (!Number.isInteger(this.y / wall) && this.direction.OY) return;
 
         const collideDirections = getCollideSides(field, 'direction');
 

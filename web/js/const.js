@@ -2,7 +2,7 @@ export const CANVAS = document.getElementById('Canvas');
 export const CTX = CANVAS.getContext('2d');
 CANVAS.width = 800;
 CANVAS.height = 600;
-
+export const wall = 20;
 export const MATRIX = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
