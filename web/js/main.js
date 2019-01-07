@@ -80,6 +80,7 @@ function popupEndGame(score) {
 function main() {
     const gameObjects = initializeGameObjects();
     const deltaTime = 1 / 60;
+    const delayTime = Math.floor(1000 / 60);
 
     redraw(gameObjects);
     const animateFn = () => {
@@ -90,7 +91,7 @@ function main() {
 
         redraw(gameObjects);
 
-        setTimeout(animateFn, Math.floor(1000 / 60));
+        setTimeout(animateFn, delayTime);
     };
 
     animateFn();

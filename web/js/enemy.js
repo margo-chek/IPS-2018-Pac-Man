@@ -9,7 +9,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
     this.y = Math.round(enemyY);
 
     const IMAGE = new Image(Enemy.SIZE, Enemy.SIZE);
-    IMAGE.src = './image/ene.png';
+    IMAGE.src = '/pacman/web/image/ene.png';
 
     this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
     this.directionChangeInterval = null;

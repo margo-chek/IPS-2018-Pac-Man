@@ -9,7 +9,7 @@ export default function Hero({heroX, heroY, heroR}) {
     this.direction = {OY: true, OX: false};
 
     const IMAGE = new Image(Hero.SIZE, Hero.SIZE);
-    IMAGE.src = '/pacman/image/pac.png';
+    IMAGE.src = '/pacman/web/image/pac.png';
 
     const isCollide = function(row, column) {
         return Const.MATRIX[row][column] === 1;

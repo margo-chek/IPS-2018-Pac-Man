@@ -8,7 +8,7 @@ export default function Fruit({fruitX, fruitY}) {
     this.isFruit = true;
 
     const IMAGE = new Image(Fruit.SIZE, Fruit.SIZE);
-    IMAGE.src = '/pacman/image/fru.png';
+    IMAGE.src = '/pacman/web/image/fru.png';
 
     this.draw = function() {
         CTX.drawImage(IMAGE, Fruit.START, Fruit.START, Fruit.SIZE, Fruit.SIZE,
