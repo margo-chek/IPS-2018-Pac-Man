@@ -23,9 +23,10 @@ export default function PointCounter() {
                 clearInterval(counterInterval);
                 counterInterval = null;
             }
-        }, 1);
+        }, PointCounter.Delay);
     };
 }
 
 PointCounter.NumberOfDigits = 8;
 PointCounter.Score = 300;
+PointCounter.Delay = 1;

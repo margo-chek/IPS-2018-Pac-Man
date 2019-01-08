@@ -1,5 +1,6 @@
 'use strict';
-import {CTX, MATRIX, wall} from './const.js';
+import {CTX, wall} from './const.js';
+import {MATRIX} from './matrix.js';
 
 // let enemyId = 0;
 

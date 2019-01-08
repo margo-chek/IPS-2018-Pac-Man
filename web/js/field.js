@@ -1,6 +1,7 @@
 'use strict';
 
-import {CTX, MATRIX, KEYS_MAP} from './const.js';
+import {CTX, KEYS_MAP} from './const.js';
+import {MATRIX} from './matrix.js';
 
 export default function Field() {
     this.blockageWidth = 20;

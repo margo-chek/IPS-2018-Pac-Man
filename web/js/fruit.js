@@ -1,6 +1,7 @@
 'use strict';
 
-import {CTX, MATRIX} from './const.js';
+import {CTX} from './const.js';
+import {MATRIX} from './matrix.js';
 
 export default function Fruit({fruitX, fruitY}) {
     this.x = Math.round(fruitX);

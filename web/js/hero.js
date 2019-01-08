@@ -1,6 +1,7 @@
 'use strict';
 import * as Const from './const.js';
 import {CTX} from './const.js';
+import {MATRIX} from './matrix.js';
 
 export default function Hero({heroX, heroY, heroR}) {
     this.x = Math.round(heroX);
@@ -12,7 +13,7 @@ export default function Hero({heroX, heroY, heroR}) {
     IMAGE.src = '/pacman/web/image/pac.png';
 
     const isCollide = function(row, column) {
-        return Const.MATRIX[row][column] === 1;
+        return MATRIX[row][column] === 1;
     };
 
     const isCollideLeft = function(indexes, isDirection = false) {
