@@ -7,7 +7,7 @@
     $userInfo = findUserByLogin($login, $pass);
     
     if (empty($userInfo)) {
-        redirect('/login.php?result=' . ERR_USER_REGISTRATION_WRONG_DATA);
+        redirect('../login.php?result=' . ERR_USER_REGISTRATION_WRONG_DATA);
     }
     
     saveSessionUser($userInfo);

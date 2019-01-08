@@ -5,18 +5,18 @@ import Fruit from './fruit.js';
 import Enemy from './enemy.js';
 import Field from './field.js';
 import PointCounter from './pointCounter.js';
-import * as Const from './const.js';
+import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
 
-function clearFon() {
-    Const.CTX.clearRect(0, 0, Const.CANVAS.width, Const.CANVAS.height);
+function clearFon(CTX) {
+    CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-function redraw({field, hero, enemies, fruits}) {
-    clearFon();
-    field.draw();
-    for (const fruit of fruits) fruit && fruit.draw();
-    hero.draw();
-    for (const enemy of enemies) enemy.draw();
+function redraw(CTX, {field, hero, enemies, fruits}) {
+    clearFon(CTX);
+    field.draw(CTX);
+    for (const fruit of fruits) fruit && fruit.draw(CTX);
+    hero.draw(CTX);
+    for (const enemy of enemies) enemy.draw(CTX);
 }
 
 function addNewEnemy(hero, enemies, field) {
@@ -78,18 +78,22 @@ function popupEndGame(score) {
 }
 
 function main() {
-    const gameObjects = initializeGameObjects();
+    const CANVAS = document.getElementById('Canvas');
+    CANVAS.width = CANVAS_WIDTH;
+    CANVAS.height = CANVAS_HEIGHT;
+    const CTX = CANVAS.getContext('2d');
     const deltaTime = 1 / 60;
     const delayTime = Math.floor(1000 / 60);
+    const gameObjects = initializeGameObjects();
 
-    redraw(gameObjects);
+    redraw(CTX, gameObjects);
     const animateFn = () => {
         const isEndGame = update(gameObjects, deltaTime);
         if (isEndGame) return popupEndGame(gameObjects.pointCounter.getCurrPoints());
 
         if (gameObjects.fruits.every((fruit) => !fruit)) gameObjects.fruits = Fruit.initializeFruits();
 
-        redraw(gameObjects);
+        redraw(CTX, gameObjects);
 
         setTimeout(animateFn, delayTime);
     };

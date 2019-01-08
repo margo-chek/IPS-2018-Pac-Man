@@ -1,7 +1,7 @@
 'use strict';
-import * as Const from './const.js';
-import {CTX} from './const.js';
+import * as Keys from './keys.js';
 import {MATRIX} from './matrix.js';
+import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
 
 export default function Hero({heroX, heroY, heroR}) {
     this.x = Math.round(heroX);
@@ -57,16 +57,16 @@ export default function Hero({heroX, heroY, heroR}) {
         this.x = indexes.column * Hero.WIDTH;
         if (this.direction.left) this.x += Hero.WIDTH;
 
-        Const.KEYS_MAP.left = collision.left ? false : Const.KEYS_MAP.left;
-        Const.KEYS_MAP.right = collision.right ? false : Const.KEYS_MAP.right;
+        Keys.KEYS_MAP.left = collision.left ? false : Keys.KEYS_MAP.left;
+        Keys.KEYS_MAP.right = collision.right ? false : Keys.KEYS_MAP.right;
     }.bind(this);
 
     const fixWhenOYCollision = function(indexes, field, collision) {
         this.y = indexes.row * Hero.HEIGHT;
         if (this.direction.up) this.y += Hero.HEIGHT;
 
-        Const.KEYS_MAP.up = collision.up ? false : Const.KEYS_MAP.up;
-        Const.KEYS_MAP.down = collision.down ? false : Const.KEYS_MAP.down;
+        Keys.KEYS_MAP.up = collision.up ? false : Keys.KEYS_MAP.up;
+        Keys.KEYS_MAP.down = collision.down ? false : Keys.KEYS_MAP.down;
     }.bind(this);
 
     const checkCollisionWithField = function(field, step = 0) {
@@ -116,15 +116,15 @@ export default function Hero({heroX, heroY, heroR}) {
     }.bind(this);
 
     const doCanChangeDirectionToOX = function(collideDirections) {
-        const doCanToGoLeft = Const.KEYS_MAP.left && !collideDirections.left;
-        const doCanToGoRight = Const.KEYS_MAP.right && !collideDirections.right;
+        const doCanToGoLeft = Keys.KEYS_MAP.left && !collideDirections.left;
+        const doCanToGoRight = Keys.KEYS_MAP.right && !collideDirections.right;
 
         return this.direction.OY && (doCanToGoLeft || doCanToGoRight);
     }.bind(this);
 
     const doCanChangeDirectionToOY = function(collideDirections) {
-        const doCanToGoUp = Const.KEYS_MAP.up && !collideDirections.up;
-        const doCanToGoDown = Const.KEYS_MAP.down && !collideDirections.down;
+        const doCanToGoUp = Keys.KEYS_MAP.up && !collideDirections.up;
+        const doCanToGoDown = Keys.KEYS_MAP.down && !collideDirections.down;
 
         return this.direction.OX && (doCanToGoUp || doCanToGoDown);
     }.bind(this);
@@ -133,16 +133,16 @@ export default function Hero({heroX, heroY, heroR}) {
         this.direction.OY = false;
         this.direction.OX = true;
 
-        Const.KEYS_MAP.up = false;
-        Const.KEYS_MAP.down = false;
+        Keys.KEYS_MAP.up = false;
+        Keys.KEYS_MAP.down = false;
     }.bind(this);
 
     const changeDirectionToOY = function() {
         this.direction.OX = false;
         this.direction.OY = true;
 
-        Const.KEYS_MAP.left = false;
-        Const.KEYS_MAP.right = false;
+        Keys.KEYS_MAP.left = false;
+        Keys.KEYS_MAP.right = false;
     }.bind(this);
 
     const updateDirection = function(field) {
@@ -162,22 +162,22 @@ export default function Hero({heroX, heroY, heroR}) {
 
     const updatePosition = function(step) {
         if (this.direction.OY) {
-            if (!Const.KEYS_MAP.up && !Const.KEYS_MAP.down) return;
-            if (Const.KEYS_MAP.up) {
+            if (!Keys.KEYS_MAP.up && !Keys.KEYS_MAP.down) return;
+            if (Keys.KEYS_MAP.up) {
                 this.y -= step;
             }
-            if (Const.KEYS_MAP.down) {
+            if (Keys.KEYS_MAP.down) {
                 this.y += step;
             }
 
             return;
         }
 
-        if (!Const.KEYS_MAP.left && !Const.KEYS_MAP.right) return;
-        if (Const.KEYS_MAP.left) {
+        if (!Keys.KEYS_MAP.left && !Keys.KEYS_MAP.right) return;
+        if (Keys.KEYS_MAP.left) {
             this.x -= step;
         }
-        if (Const.KEYS_MAP.right) {
+        if (Keys.KEYS_MAP.right) {
             this.x += step;
         }
     }.bind(this);
@@ -207,7 +207,7 @@ export default function Hero({heroX, heroY, heroR}) {
         return objects.some(this.checkCollisionWithObject);
     };
 
-    this.draw = function() {
+    this.draw = function(CTX) {
         CTX.drawImage(IMAGE, Hero.START, Hero.START, Hero.SIZE, Hero.SIZE, this.x, this.y, Hero.WIDTH, Hero.HEIGHT);
     };
 }
@@ -218,8 +218,8 @@ Hero.START = 0;
 Hero.SIZE = 480;
 
 Hero.initializeHero = function(field) {
-    const heroX = (Const.CANVAS.width - Hero.WIDTH) / 2 + Hero.WIDTH / 2;
-    const heroY = (Const.CANVAS.height - Hero.HEIGHT) / 2 - Hero.HEIGHT / 2;
+    const heroX = (CANVAS_WIDTH - Hero.WIDTH) / 2 + Hero.WIDTH / 2;
+    const heroY = (CANVAS_HEIGHT - Hero.HEIGHT) / 2 - Hero.HEIGHT / 2;
 
     return new Hero({heroX, heroY, heroR: 6});
 };

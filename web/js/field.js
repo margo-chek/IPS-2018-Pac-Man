@@ -1,13 +1,13 @@
 'use strict';
 
-import {CTX, KEYS_MAP} from './const.js';
+import {KEYS_MAP} from './keys.js';
 import {MATRIX} from './matrix.js';
 
 export default function Field() {
     this.blockageWidth = 20;
     this.blockageHeight = 20;
 
-    this.draw = function() {
+    this.draw = function(CTX) {
         let blockageX = 0;
         let blockageY = 0;
         const dBlockageX = 20;

@@ -1,5 +1,5 @@
 'use strict';
-import {CTX, wall} from './const.js';
+import {wall} from './ctx.js';
 import {MATRIX} from './matrix.js';
 
 // let enemyId = 0;
@@ -357,7 +357,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         updatePosition(step);
     };
 
-    this.draw = function() {
+    this.draw = function(CTX) {
         CTX.drawImage(IMAGE, Enemy.START, Enemy.START, Enemy.SIZE, Enemy.SIZE, this.x,
             this.y, Enemy.WIDTH, Enemy.HEIGHT);
     };

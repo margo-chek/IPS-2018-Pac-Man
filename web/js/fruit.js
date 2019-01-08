@@ -1,6 +1,5 @@
 'use strict';
 
-import {CTX} from './const.js';
 import {MATRIX} from './matrix.js';
 
 export default function Fruit({fruitX, fruitY}) {
@@ -11,7 +10,7 @@ export default function Fruit({fruitX, fruitY}) {
     const IMAGE = new Image(Fruit.SIZE, Fruit.SIZE);
     IMAGE.src = '/pacman/web/image/fru.png';
 
-    this.draw = function() {
+    this.draw = function(CTX) {
         CTX.drawImage(IMAGE, Fruit.START, Fruit.START, Fruit.SIZE, Fruit.SIZE,
             this.x, this.y, Fruit.WIDTH, Fruit.HEIGHT);
     };

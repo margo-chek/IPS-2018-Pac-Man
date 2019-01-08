@@ -9,7 +9,7 @@
     if (isUserLogin()) {
         $userId = $_SESSION['user_id'];
     } else {
-        redirect("./login.php");
+        redirect("../login.php");
     }
 
     if (!saveScore($userId, $score)) {
