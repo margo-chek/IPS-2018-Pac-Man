@@ -1,47 +1,26 @@
 'use strict';
 import * as Keys from './keys.js';
+import Field from './field.js';
 import {MATRIX} from './matrix.js';
 import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
 
-export default function Hero({heroX, heroY, heroR}) {
+export default function Hero({heroX, heroY}) {
     this.x = Math.round(heroX);
     this.y = Math.round(heroY);
-    this.r = heroR;
+    this.r = Hero.RADIUS;
     this.direction = {OY: true, OX: false};
 
     const IMAGE = new Image(Hero.SIZE, Hero.SIZE);
+    const directionSrc = {
+        down: '/pacman/web/image/pacDown.png',
+        up: '/pacman/web/image/pacUp.png',
+        right: '/pacman/web/image/pacRight.png',
+        left: '/pacman/web/image/pacLeft.png',
+    };
     IMAGE.src = '/pacman/web/image/pac.png';
 
-    const isCollide = function(row, column) {
-        return MATRIX[row][column] === 1;
-    };
-
-    const isCollideLeft = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row, indexes.column - 1);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
-    };
-
-    const isCollideRight = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
-
-        return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
-    };
-
-    const isCollideUp = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row - 1, indexes.column);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
-    };
-
-    const isCollideDown = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
-    };
-
-    const getCollideSides = function(field, type, step = 0) {
-        const indexes = field.getIndexes(this, step);
+    const getCollideSides = function(type, step = 0) {
+        const indexes = Field.getIndexes(this, step);
 
         const isDirection = type === 'direction';
 
@@ -53,7 +32,7 @@ export default function Hero({heroX, heroY, heroR}) {
         };
     }.bind(this);
 
-    const fixWhenOXCollision = function(indexes, field, collision) {
+    const fixWhenOXCollision = function(indexes, collision) {
         this.x = indexes.column * Hero.WIDTH;
         if (this.direction.left) this.x += Hero.WIDTH;
 
@@ -61,7 +40,7 @@ export default function Hero({heroX, heroY, heroR}) {
         Keys.KEYS_MAP.right = collision.right ? false : Keys.KEYS_MAP.right;
     }.bind(this);
 
-    const fixWhenOYCollision = function(indexes, field, collision) {
+    const fixWhenOYCollision = function(indexes, collision) {
         this.y = indexes.row * Hero.HEIGHT;
         if (this.direction.up) this.y += Hero.HEIGHT;
 
@@ -69,20 +48,20 @@ export default function Hero({heroX, heroY, heroR}) {
         Keys.KEYS_MAP.down = collision.down ? false : Keys.KEYS_MAP.down;
     }.bind(this);
 
-    const checkCollisionWithField = function(field, step = 0) {
-        const currentIndexes = field.getIndexes(this);
-        const collideSides = getCollideSides(field, 'withField', step);
+    const checkCollisionWithField = function(step = 0) {
+        const currentIndexes = Field.getIndexes(this);
+        const collideSides = getCollideSides('withField', step);
 
         const isCollideByOX = this.direction.OX && (collideSides.left || collideSides.right);
         const isCollideByOY = this.direction.OY && (collideSides.up || collideSides.down);
 
         if (isCollideByOX) {
-            fixWhenOXCollision(currentIndexes, field, collideSides);
+            fixWhenOXCollision(currentIndexes, collideSides);
 
             return;
         }
 
-        if (isCollideByOY) fixWhenOYCollision(currentIndexes, field, collideSides);
+        if (isCollideByOY) fixWhenOYCollision(currentIndexes, collideSides);
     }.bind(this);
 
     const isCollideByOX = function(object, objectBounds) {
@@ -145,11 +124,11 @@ export default function Hero({heroX, heroY, heroR}) {
         Keys.KEYS_MAP.right = false;
     }.bind(this);
 
-    const updateDirection = function(field) {
+    const updateDirection = function() {
         if (!Number.isInteger(this.x / Hero.WIDTH) && this.direction.OX) return;
         if (!Number.isInteger(this.y / Hero.HEIGHT) && this.direction.OY) return;
 
-        const collideDirections = getCollideSides(field, 'direction');
+        const collideDirections = getCollideSides('direction');
 
         if (doCanChangeDirectionToOX(collideDirections)) {
             changeDirectionToOX();
@@ -182,9 +161,9 @@ export default function Hero({heroX, heroY, heroR}) {
         }
     }.bind(this);
 
-    this.update = function(step, field) {
-        checkCollisionWithField(field, step);
-        updateDirection(field);
+    this.update = function(step) {
+        checkCollisionWithField(step);
+        updateDirection();
         updatePosition(step);
     };
 
@@ -208,6 +187,20 @@ export default function Hero({heroX, heroY, heroR}) {
     };
 
     this.draw = function(CTX) {
+        if (this.direction.OX) {
+            if (this.direction.left) {
+                IMAGE.src = directionSrc.left;
+            } else {
+                IMAGE.src = directionSrc.right;
+            }
+        } else {
+            if (this.direction.down) {
+                IMAGE.src = directionSrc.down;
+            } else {
+                IMAGE.src = directionSrc.up;
+            }
+        }
+
         CTX.drawImage(IMAGE, Hero.START, Hero.START, Hero.SIZE, Hero.SIZE, this.x, this.y, Hero.WIDTH, Hero.HEIGHT);
     };
 }
@@ -216,10 +209,39 @@ Hero.WIDTH = 20;
 Hero.HEIGHT = 20;
 Hero.START = 0;
 Hero.SIZE = 480;
+Hero.RADIUS = 6;
 
-Hero.initializeHero = function(field) {
+Hero.initializeHero = function() {
     const heroX = (CANVAS_WIDTH - Hero.WIDTH) / 2 + Hero.WIDTH / 2;
     const heroY = (CANVAS_HEIGHT - Hero.HEIGHT) / 2 - Hero.HEIGHT / 2;
 
-    return new Hero({heroX, heroY, heroR: 6});
+    return new Hero({heroX, heroY});
+};
+
+const isCollide = function(row, column) {
+    return MATRIX[row][column] === 1;
+};
+
+const isCollideLeft = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.column - 1);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
+};
+
+const isCollideRight = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
+
+    return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
+};
+
+const isCollideUp = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row - 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
+};
+
+const isCollideDown = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
 };

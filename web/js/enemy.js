@@ -1,10 +1,11 @@
 'use strict';
 import {wall} from './ctx.js';
 import {MATRIX} from './matrix.js';
+import Field from './field.js';
 
 // let enemyId = 0;
 
-export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
+export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
     // this.id = 'enemy' + (++enemyId);
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
@@ -35,7 +36,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         this.direction.OX = true;
     }.bind(this);
 
-    const initializeDirection = function( direction, collision ) {
+    const initializeDirection = function(direction, collision) {
         switch (direction) {
         case 'up':
             if (!collision.up) initializeUpDirection();
@@ -145,48 +146,20 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         if (this.direction.OY) reflectByOY();
     }.bind(this);
 
-    const getRandomDirection = function(field) {
+    const getRandomDirection = function() {
         clearInterval(this.directionChangeInterval);
         this.directionChangeInterval = null;
 
-        const directionsArray = getDirectionsArray(getCollideSides(field, 'direction'));
+        const directionsArray = getDirectionsArray(getCollideSides('direction'));
         if (!directionsArray.length) return setReflectiveDirection();
 
         this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
-        const index = Math.round(Math.random() * (0 - (directionsArray.length - 1))) + (directionsArray.length - 1);
+        const index = Math.round(Math.random() * (directionsArray.length - 1));
         setDirection(directionsArray[index]);
     }.bind(this);
 
-    const isCollide = function(row, column) {
-        return MATRIX[row][column] === 1;
-    };
-
-    const isCollideLeft = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row, indexes.column - 1);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
-    };
-
-    const isCollideRight = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
-
-        return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
-    };
-
-    const isCollideUp = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.row - 1, indexes.column);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
-    };
-
-    const isCollideDown = function(indexes, isDirection = false) {
-        if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
-
-        return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
-    };
-
-    const getCollideSides = function(field, type, step = 0) {
-        const indexes = field.getIndexes(this, step);
+    const getCollideSides = function(type, step = 0) {
+        const indexes = Field.getIndexes(this, step);
 
         const isDirection = type === 'direction';
 
@@ -198,34 +171,34 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         };
     }.bind(this);
 
-    const fixWhenOXCollision = function(indexes, field) {
-        this.x = indexes.column * field.blockageWidth;
-        if (this.direction.left) this.x += field.blockageWidth;
+    const fixWhenOXCollision = function(indexes) {
+        this.x = indexes.column * Field.BLOCKAGESIZE;
+        if (this.direction.left) this.x += Field.BLOCKAGESIZE;
 
-        getRandomDirection(field);
+        getRandomDirection();
     }.bind(this);
 
-    const fixWhenOYCollision = function(indexes, field) {
-        this.y = indexes.row * field.blockageHeight;
-        if (this.direction.up) this.y += field.blockageHeight;
+    const fixWhenOYCollision = function(indexes) {
+        this.y = indexes.row * Field.BLOCKAGESIZE;
+        if (this.direction.up) this.y += Field.BLOCKAGESIZE;
 
-        getRandomDirection(field);
+        getRandomDirection();
     }.bind(this);
 
-    const checkCollisionWithField = function(field, step = 0) {
-        const currentIndexes = field.getIndexes(this);
-        const collideSides = getCollideSides(field, 'withField', step);
+    const checkCollisionWithField = function(step = 0) {
+        const currentIndexes = Field.getIndexes(this);
+        const collideSides = getCollideSides('withField', step);
 
         const isCollideByOX = this.direction.OX && (collideSides.left || collideSides.right);
         const isCollideByOY = this.direction.OY && (collideSides.up || collideSides.down);
 
         if (isCollideByOX) {
-            fixWhenOXCollision(currentIndexes, field);
+            fixWhenOXCollision(currentIndexes);
 
             return collideSides;
         }
 
-        if (isCollideByOY) fixWhenOYCollision(currentIndexes, field);
+        if (isCollideByOY) fixWhenOYCollision(currentIndexes);
 
         return collideSides;
     }.bind(this);
@@ -301,7 +274,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         this.direction.right = false;
     }.bind(this);
 
-    const updateDirection = function(field) {
+    const updateDirection = function() {
         if (!this.directionChangeInterval) {
             this.directionChangeInterval = setInterval(() => chooseNewDirection(), 300);
         }
@@ -309,7 +282,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         if (!Number.isInteger(this.x / wall) && this.direction.OX) return;
         if (!Number.isInteger(this.y / wall) && this.direction.OY) return;
 
-        const collideDirections = getCollideSides(field, 'direction');
+        const collideDirections = getCollideSides('direction');
 
         if (doCanChangeDirectionToOX(collideDirections)) {
             changeDirectionToOX();
@@ -341,19 +314,19 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
         }
     }.bind(this);
 
-    this.initialize = function(field, expectedDirection = '') {
-        const collision = getCollideSides(field, 'direction');
+    this.initialize = function(expectedDirection = '') {
+        const collision = getCollideSides('direction');
 
         if (expectedDirection !== '') {
-            getRandomDirection(field);
+            getRandomDirection();
         } else {
             initializeDirection(expectedDirection, collision);
         }
     };
 
-    this.update = function(step, field) {
-        checkCollisionWithField(field, step);
-        updateDirection(field);
+    this.update = function(step) {
+        checkCollisionWithField(step);
+        updateDirection();
         updatePosition(step);
     };
 
@@ -362,7 +335,7 @@ export default function Enemy({enemyX, enemyY, field, enemyDirection = ''}) {
             this.y, Enemy.WIDTH, Enemy.HEIGHT);
     };
 
-    this.initialize(field, enemyDirection);
+    this.initialize(enemyDirection);
 }
 
 Enemy.WIDTH = 20;
@@ -370,31 +343,55 @@ Enemy.HEIGHT = 20;
 Enemy.START = 0;
 Enemy.SIZE = 504;
 
-const getStartEnemies = function(field) {
+const getStartEnemies = function() {
     return [
         {
-            enemyX: 2 * field.blockageWidth,
-            enemyY: 6 * field.blockageHeight,
-            field: field,
+            enemyX: 2 * Field.BLOCKAGESIZE,
+            enemyY: 6 * Field.BLOCKAGESIZE,
         },
         {
-            enemyX: 2 * field.blockageWidth,
-            enemyY: 21 * field.blockageHeight,
-            field: field,
+            enemyX: 2 * Field.BLOCKAGESIZE,
+            enemyY: 21 * Field.BLOCKAGESIZE,
         },
         {
-            enemyX: 36 * field.blockageWidth,
-            enemyY: 6 * field.blockageHeight,
-            field: field,
+            enemyX: 36 * Field.BLOCKAGESIZE,
+            enemyY: 6 * Field.BLOCKAGESIZE,
         },
         {
-            enemyX: 36 * field.blockageWidth,
-            enemyY: 21 * field.blockageHeight,
-            field: field,
+            enemyX: 36 * Field.BLOCKAGESIZE,
+            enemyY: 21 * Field.BLOCKAGESIZE,
         },
     ];
 };
 
-Enemy.initializeEnemies = function(field) {
-    return getStartEnemies(field).map((enemy) => new Enemy(enemy));
+Enemy.initializeEnemies = function() {
+    return getStartEnemies().map((enemy) => new Enemy(enemy));
+};
+
+const isCollide = function(row, column) {
+    return MATRIX[row][column] === 1;
+};
+
+const isCollideLeft = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.column - 1);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
+};
+
+const isCollideRight = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
+
+    return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
+};
+
+const isCollideUp = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row - 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
+};
+
+const isCollideDown = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
 };

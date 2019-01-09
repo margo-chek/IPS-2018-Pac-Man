@@ -5,44 +5,44 @@ import Fruit from './fruit.js';
 import Enemy from './enemy.js';
 import Field from './field.js';
 import PointCounter from './pointCounter.js';
+import GameStateHandler from './gameStateHandler.js';
 import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
 
 function clearFon(CTX) {
     CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-function redraw(CTX, {field, hero, enemies, fruits}) {
+function redraw(CTX, {hero, enemies, fruits}) {
     clearFon(CTX);
-    field.draw(CTX);
+    Field.draw(CTX);
     for (const fruit of fruits) fruit && fruit.draw(CTX);
     hero.draw(CTX);
     for (const enemy of enemies) enemy.draw(CTX);
 }
 
-function addNewEnemy(hero, enemies, field) {
-    const {x, y} = field.getFreeCell(enemies, hero);
+function addNewEnemy(hero, enemies) {
+    const {x, y} = Field.getFreeCell(enemies, hero);
 
     enemies.push(new Enemy({
-        enemyX: x * field.blockageWidth,
-        enemyY: y * field.blockageHeight,
-        field: field,
+        enemyX: x * Field.BLOCKAGESIZE,
+        enemyY: y * Field.BLOCKAGESIZE,
     }));
 
     console.log(enemies[enemies.length - 1]); // debugger;
 }
 
-function update({hero, enemies, fruits, field, pointCounter}, deltaTime) {
+function update({hero, enemies, fruits, pointCounter}, deltaTime) {
     const heroStep = Math.floor(150 * deltaTime);
     const enemyStep = Math.floor(150 * deltaTime);
     const previousPoints = pointCounter.getCurrPoints();
 
-    hero.update(heroStep, field);
+    hero.update(heroStep);
     if (hero.checkCollisionWithOtherObjects(fruits)) pointCounter.increasePoints();
 
     const doAddNewEnemy = pointCounter.getCurrPoints() > previousPoints &&
         pointCounter.getCurrPoints() % PointCounter.Score === 0;
-    if (doAddNewEnemy) addNewEnemy(hero, enemies, field);
-    for (const enemy of enemies) enemy.update(enemyStep, field);
+    if (doAddNewEnemy) addNewEnemy(hero, enemies);
+    for (const enemy of enemies) enemy.update(enemyStep);
 
     return hero.checkCollisionWithOtherObjects(enemies);
 }
@@ -50,9 +50,8 @@ function update({hero, enemies, fruits, field, pointCounter}, deltaTime) {
 function initializeGameObjects() {
     const gameObjects = {};
     gameObjects.pointCounter = new PointCounter();
-    gameObjects.field = new Field();
-    gameObjects.hero = Hero.initializeHero(gameObjects.field);
-    gameObjects.enemies = Enemy.initializeEnemies(gameObjects.field);
+    gameObjects.hero = Hero.initializeHero();
+    gameObjects.enemies = Enemy.initializeEnemies();
     gameObjects.fruits = Fruit.initializeFruits();
 
     return gameObjects;
@@ -86,8 +85,19 @@ function main() {
     const delayTime = Math.floor(1000 / 60);
     const gameObjects = initializeGameObjects();
 
+    const gameStateHandler = new GameStateHandler();
+
     redraw(CTX, gameObjects);
     const animateFn = () => {
+        if (gameStateHandler.state === 'pause') {
+            //Тут нужна обработка при паузе (модальные окна или что-то подобное),
+            // если что-то подобное вообще должно быть
+
+            setTimeout(animateFn, delayTime);
+
+            return;
+        }
+
         const isEndGame = update(gameObjects, deltaTime);
         if (isEndGame) return popupEndGame(gameObjects.pointCounter.getCurrPoints());
 

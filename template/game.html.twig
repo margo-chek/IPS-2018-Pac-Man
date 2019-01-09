@@ -9,11 +9,16 @@
       <div class="col-6 my-4">
         <div class="row">
           <div class="col">
+            <button type="button" class="btn btn-success btn-circle"><i id="controller" class="fas fa-map"
+                    onclick="this.paused ? this.play() : this.pause();"></i>II</button>
+          </div>
+          <div class="col">
             <a href="records.php"><button type="button" class="btn btn-info buttonIndex">Таблица рекордов</button></a>
           </div>
           <div class="col">
             <a href="index.php"><button type="button" class="btn btn-danger buttonIndex">Выйти</button></a>
           </div>
+          <div class="col-2"> </div>
         </div>
       </div>
     </div>
@@ -28,7 +33,7 @@
       <canvas id="Canvas"></canvas>
     </div>
 
-      {% include "popup.html.twig" %}
+      {% include "popup_end_game.html.twig" %}
 
   </div>
   <script type="module" src="web/js/main.js"></script>
