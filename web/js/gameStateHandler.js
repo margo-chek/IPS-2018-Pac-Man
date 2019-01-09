@@ -8,6 +8,9 @@ export default function GameStateHandler() {
 
     this.handleClick = () => {
         //Тут нужна вся обработка изменения самого DOM элемента
+        const infoWindow = document.getElementById('winMod');
+        infoWindow.style.display = 'block';
+
 
         this.state = this.state === 'game' ? 'pause' : 'game';
     };

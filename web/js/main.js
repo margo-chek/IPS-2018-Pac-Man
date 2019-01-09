@@ -92,6 +92,7 @@ function main() {
         if (gameStateHandler.state === 'pause') {
             //Тут нужна обработка при паузе (модальные окна или что-то подобное),
             // если что-то подобное вообще должно быть
+            handleClick();
 
             setTimeout(animateFn, delayTime);
 
