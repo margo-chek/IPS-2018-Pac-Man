@@ -3,19 +3,16 @@
 import {KEYS_MAP} from './keys.js';
 import {MATRIX} from './matrix.js';
 
-export default function Field() {}
+export const BLOCKAGE_SIZE = 20;
+const WALL = 1;
+const WALL_COLOR = '#FF8B00';
+const FREE_SPACE_COLOR = '#6C0AAB';
 
+export function isWall( number ) {
+    return number === WALL;
+}
 
-Field.BLOCKAGESIZE = 20;
-Field.WALL = 1;
-Field.WALLCOLOR = '#FF8B00';
-Field.FREESPACECOLOR = '#6C0AAB';
-
-Field.isWall = function( number ) {
-    return number === Field.WALL;
-};
-
-Field.draw = function( CTX ) {
+export function draw( CTX ) {
     let blockageX = 0;
     let blockageY = 0;
     const dBlockageX = 20;
@@ -23,16 +20,16 @@ Field.draw = function( CTX ) {
 
     MATRIX.forEach( ( item ) => {
         item.forEach( ( number ) => {
-            CTX.fillStyle = Field.isWall( number ) ? Field.WALLCOLOR : Field.FREESPACECOLOR;
-            CTX.fillRect( blockageX, blockageY, Field.BLOCKAGESIZE, Field.BLOCKAGESIZE );
+            CTX.fillStyle = isWall( number ) ? WALL_COLOR : FREE_SPACE_COLOR;
+            CTX.fillRect( blockageX, blockageY, BLOCKAGE_SIZE, BLOCKAGE_SIZE );
             blockageX += dBlockageX;
         } );
         blockageX = 0;
         blockageY += dBlockageY;
     } );
-};
+}
 
-Field.getIndexes = function( elem, step = 0 ) {
+function getDeltas( elem, step ) {
     let deltaOX = 0;
     if (elem.direction.OX) {
         deltaOX = KEYS_MAP.left ? -step : KEYS_MAP.right ? step : 0;
@@ -43,15 +40,21 @@ Field.getIndexes = function( elem, step = 0 ) {
         deltaOY = KEYS_MAP.up ? -step : KEYS_MAP.down ? step : 0;
     }
 
-    const row = Math.floor( (elem.y + deltaOY) / Field.BLOCKAGESIZE );
-    const rowWide = Math.floor( (elem.y + Field.BLOCKAGESIZE - 1 + deltaOY) / Field.BLOCKAGESIZE );
-    const column = Math.floor( (elem.x + deltaOX) / Field.BLOCKAGESIZE );
-    const columnWide = Math.floor( (elem.x + Field.BLOCKAGESIZE - 1 + deltaOX) / Field.BLOCKAGESIZE );
+    return {deltaOX: deltaOX, deltaOY: deltaOY};
+}
+
+export function getIndexes( elem, step = 0 ) {
+    const {deltaOX, deltaOY} = getDeltas(elem, step);
+
+    const row = Math.floor( (elem.y + deltaOY) / BLOCKAGE_SIZE );
+    const rowWide = Math.floor( (elem.y + BLOCKAGE_SIZE - 1 + deltaOY) / BLOCKAGE_SIZE );
+    const column = Math.floor( (elem.x + deltaOX) / BLOCKAGE_SIZE );
+    const columnWide = Math.floor( (elem.x + BLOCKAGE_SIZE - 1 + deltaOX) / BLOCKAGE_SIZE );
 
     return {row: row, rowWide: rowWide, column: column, columnWide: columnWide};
-};
+}
 
-Field.getFreeCell = function( enemies, hero ) {
+export function getFreeCell( enemies, hero ) {
     const nonFreeCells = compileNonFreeCells( ...enemies, hero );
     const freeCells = compileFreeCells( nonFreeCells );
 
@@ -66,9 +69,9 @@ Field.getFreeCell = function( enemies, hero ) {
     console.log( result );
 
     return result;
-};
+}
 
-const compileFreeCells = function( nonFreeCells ) {
+function compileFreeCells( nonFreeCells ) {
     const freeCells = {
         column: [],
         row: [],
@@ -76,7 +79,7 @@ const compileFreeCells = function( nonFreeCells ) {
 
     MATRIX.forEach( ( row, indexRow ) => {
         row.forEach( ( column, indexColumn ) => {
-            if (Field.isWall( column )) return;
+            if (isWall( column )) return;
             if (nonFreeCells.column.includes( indexColumn ) && nonFreeCells.row.includes( indexRow )) return;
 
             freeCells.column.push( indexColumn );
@@ -85,16 +88,16 @@ const compileFreeCells = function( nonFreeCells ) {
     } );
 
     return freeCells;
-};
+}
 
-const compileNonFreeCells = function( ...objects ) {
+function compileNonFreeCells( ...objects ) {
     const nonFreeCells = {
         column: [],
         row: [],
     };
 
     objects.forEach( ( object ) => {
-        const pos = Field.getIndexes( object );
+        const pos = getIndexes( object );
 
         nonFreeCells.column.push( pos.column );
         nonFreeCells.row.push( pos.row );
@@ -110,4 +113,4 @@ const compileNonFreeCells = function( ...objects ) {
     } );
 
     return nonFreeCells;
-};
+}

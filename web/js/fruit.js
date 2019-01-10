@@ -2,24 +2,24 @@
 
 import {MATRIX} from './matrix.js';
 
+const FRUIT_WIDTH = 20;
+const FRUIT_HEIGHT = 20;
+const FRUIT_START = 0;
+const FRUIT_SIZE = 506;
+
 export default function Fruit({fruitX, fruitY}) {
     this.x = Math.round(fruitX);
     this.y = Math.round(fruitY);
     this.isFruit = true;
 
-    const IMAGE = new Image(Fruit.SIZE, Fruit.SIZE);
+    const IMAGE = new Image(FRUIT_SIZE, FRUIT_SIZE);
     IMAGE.src = '/pacman/web/image/fru.png';
 
     this.draw = function(CTX) {
-        CTX.drawImage(IMAGE, Fruit.START, Fruit.START, Fruit.SIZE, Fruit.SIZE,
-            this.x, this.y, Fruit.WIDTH, Fruit.HEIGHT);
+        CTX.drawImage(IMAGE, FRUIT_START, FRUIT_START, FRUIT_SIZE, FRUIT_SIZE,
+            this.x, this.y, FRUIT_WIDTH, FRUIT_HEIGHT);
     };
 }
-
-Fruit.WIDTH = 20;
-Fruit.HEIGHT = 20;
-Fruit.START = 0;
-Fruit.SIZE = 506;
 
 Fruit.initializeFruits = function() {
     const fruits = [];
@@ -27,10 +27,10 @@ Fruit.initializeFruits = function() {
     MATRIX.forEach((row, index, arr) => {
         if (index === 0 || index === arr.length - 1) return;
 
-        const cellNumber = Math.round(Math.random() * (1 - (row.length - 1))) + (row.length - 1);
+        const cellNumber = Math.round(Math.random() * ((row.length - 1) - 1)) + 1;
         if (row[cellNumber] === 1) return;
 
-        const fruit = new Fruit({fruitX: cellNumber * Fruit.WIDTH, fruitY: index * Fruit.HEIGHT});
+        const fruit = new Fruit({fruitX: cellNumber * FRUIT_WIDTH, fruitY: index * FRUIT_HEIGHT});
         fruits.push(fruit);
     });
 

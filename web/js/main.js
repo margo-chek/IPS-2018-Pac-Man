@@ -3,7 +3,7 @@
 import Hero from './hero.js';
 import Fruit from './fruit.js';
 import Enemy from './enemy.js';
-import Field from './field.js';
+import * as Field from './field.js';
 import PointCounter from './pointCounter.js';
 import GameStateHandler from './gameStateHandler.js';
 import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
@@ -24,8 +24,8 @@ function addNewEnemy(hero, enemies) {
     const {x, y} = Field.getFreeCell(enemies, hero);
 
     enemies.push(new Enemy({
-        enemyX: x * Field.BLOCKAGESIZE,
-        enemyY: y * Field.BLOCKAGESIZE,
+        enemyX: x * Field.BLOCKAGE_SIZE,
+        enemyY: y * Field.BLOCKAGE_SIZE,
     }));
 
     console.log(enemies[enemies.length - 1]); // debugger;
@@ -40,7 +40,7 @@ function update({hero, enemies, fruits, pointCounter}, deltaTime) {
     if (hero.checkCollisionWithOtherObjects(fruits)) pointCounter.increasePoints();
 
     const doAddNewEnemy = pointCounter.getCurrPoints() > previousPoints &&
-        pointCounter.getCurrPoints() % PointCounter.Score === 0;
+        pointCounter.getCurrPoints() % pointCounter.getScoreStep() === 0;
     if (doAddNewEnemy) addNewEnemy(hero, enemies);
     for (const enemy of enemies) enemy.update(enemyStep);
 
@@ -90,10 +90,6 @@ function main() {
     redraw(CTX, gameObjects);
     const animateFn = () => {
         if (gameStateHandler.state === 'pause') {
-            //Тут нужна обработка при паузе (модальные окна или что-то подобное),
-            // если что-то подобное вообще должно быть
-            handleClick();
-
             setTimeout(animateFn, delayTime);
 
             return;

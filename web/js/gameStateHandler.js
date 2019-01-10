@@ -1,17 +1,28 @@
 'use strict';
 
-export default function GameStateHandler() {
-    const controller = document.getElementById('controller');
-    controller.addEventListener('click', this.handleClick);
+const CONTROLLER = document.getElementById('controller');
+const MODAL = document.getElementById('winMod');
+const CONTINUE_BUTTON = document.getElementById('continueButton');
 
+export default function GameStateHandler() {
     this.state = 'game';
 
-    this.handleClick = () => {
-        //Тут нужна вся обработка изменения самого DOM элемента
-        const infoWindow = document.getElementById('winMod');
-        infoWindow.style.display = 'block';
+    this.turnPauseOff = () => {
+        if (this.state === 'game') return;
 
+        MODAL.style.display = 'none';
 
-        this.state = this.state === 'game' ? 'pause' : 'game';
+        this.state = 'game';
     };
+
+    this.turnPauseOn = () => {
+        if (this.state === 'pause') return;
+
+        MODAL.style.display = 'block';
+
+        this.state = 'pause';
+    };
+
+    CONTROLLER.addEventListener('click', this.turnPauseOn);
+    CONTINUE_BUTTON.addEventListener('click', this.turnPauseOff);
 }

@@ -1,11 +1,19 @@
 'use strict';
 
+const COUNTER = document.getElementById( 'counter' );
+const NUMBER_OF_DIGITS = 8;
+const SCORE_STEP = 300;
+const DELAY = 10;
+
 export default function PointCounter() {
     this.currCount = 0;
     this.currPoints = 0;
 
-    const counter = document.getElementById('counter');
-    counter.innerText = (this.currCount + '').padStart(PointCounter.NumberOfDigits, '0');
+    COUNTER.innerText = (this.currCount + '').padStart( NUMBER_OF_DIGITS, '0' );
+
+    this.getScoreStep = function() {
+        return SCORE_STEP;
+    };
 
     this.getCurrPoints = function() {
         return this.currPoints;
@@ -13,20 +21,16 @@ export default function PointCounter() {
 
     let counterInterval = null;
     this.increasePoints = function() {
-        this.currPoints += PointCounter.Score;
+        this.currPoints += SCORE_STEP;
 
         if (counterInterval !== null) return;
-        counterInterval = setInterval(() => {
-            counter.innerText = (++this.currCount + '').padStart(PointCounter.NumberOfDigits, '0');
+        counterInterval = setInterval( () => {
+            COUNTER.innerText = (++this.currCount + '').padStart( NUMBER_OF_DIGITS, '0' );
 
             if (this.currCount === this.currPoints) {
-                clearInterval(counterInterval);
+                clearInterval( counterInterval );
                 counterInterval = null;
             }
-        }, PointCounter.Delay);
+        }, DELAY );
     };
 }
-
-PointCounter.NumberOfDigits = 8;
-PointCounter.Score = 300;
-PointCounter.Delay = 1;

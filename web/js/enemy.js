@@ -1,7 +1,64 @@
 'use strict';
 import {wall} from './ctx.js';
 import {MATRIX} from './matrix.js';
-import Field from './field.js';
+import * as Field from './field.js';
+
+const getStartEnemies = function() {
+    return [
+        {
+            enemyX: 2 * Field.BLOCKAGE_SIZE,
+            enemyY: 6 * Field.BLOCKAGE_SIZE,
+        },
+        {
+            enemyX: 2 * Field.BLOCKAGE_SIZE,
+            enemyY: 21 * Field.BLOCKAGE_SIZE,
+        },
+        {
+            enemyX: 36 * Field.BLOCKAGE_SIZE,
+            enemyY: 6 * Field.BLOCKAGE_SIZE,
+        },
+        {
+            enemyX: 36 * Field.BLOCKAGE_SIZE,
+            enemyY: 21 * Field.BLOCKAGE_SIZE,
+        },
+    ];
+};
+
+const isCollide = function(row, column) {
+    if (row < 0 || row >= 30) return true;
+    if (column < 0 || column >= 40) return true;
+
+    return MATRIX[row][column] === 1;
+};
+
+const isCollideLeft = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.column - 1);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
+};
+
+const isCollideRight = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
+
+    return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
+};
+
+const isCollideUp = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.row - 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
+};
+
+const isCollideDown = function(indexes, isDirection = false) {
+    if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
+
+    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
+};
+
+const ENEMY_WIDTH = 20;
+const ENEMY_HEIGHT = 20;
+const ENEMY_START = 0;
+const ENEMY_SIZE = 504;
 
 // let enemyId = 0;
 
@@ -10,7 +67,7 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
-    const IMAGE = new Image(Enemy.SIZE, Enemy.SIZE);
+    const IMAGE = new Image(ENEMY_SIZE, ENEMY_SIZE);
     IMAGE.src = '/pacman/web/image/ene.png';
 
     this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
@@ -38,18 +95,18 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
 
     const initializeDirection = function(direction, collision) {
         switch (direction) {
-        case 'up':
-            if (!collision.up) initializeUpDirection();
-            break;
-        case 'down':
-            if (!collision.down) initializeDownDirection();
-            break;
-        case 'left':
-            if (!collision.left) initializeLeftDirection();
-            break;
-        case 'right':
-            if (!collision.right) initializeRightDirection();
-            break;
+            case 'up':
+                if (!collision.up) initializeUpDirection();
+                break;
+            case 'down':
+                if (!collision.down) initializeDownDirection();
+                break;
+            case 'left':
+                if (!collision.left) initializeLeftDirection();
+                break;
+            case 'right':
+                if (!collision.right) initializeRightDirection();
+                break;
         }
     };
 
@@ -87,18 +144,18 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
 
     const setDirection = function(direction) {
         switch (direction) {
-        case 'up':
-            setUpDirection();
-            break;
-        case 'down':
-            setDownDirection();
-            break;
-        case 'left':
-            setLeftDirection();
-            break;
-        case 'right':
-            setRightDirection();
-            break;
+            case 'up':
+                setUpDirection();
+                break;
+            case 'down':
+                setDownDirection();
+                break;
+            case 'left':
+                setLeftDirection();
+                break;
+            case 'right':
+                setRightDirection();
+                break;
         }
     };
 
@@ -172,15 +229,15 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
     }.bind(this);
 
     const fixWhenOXCollision = function(indexes) {
-        this.x = indexes.column * Field.BLOCKAGESIZE;
-        if (this.direction.left) this.x += Field.BLOCKAGESIZE;
+        this.x = indexes.column * Field.BLOCKAGE_SIZE;
+        if (this.direction.left) this.x += Field.BLOCKAGE_SIZE;
 
         getRandomDirection();
     }.bind(this);
 
     const fixWhenOYCollision = function(indexes) {
-        this.y = indexes.row * Field.BLOCKAGESIZE;
-        if (this.direction.up) this.y += Field.BLOCKAGESIZE;
+        this.y = indexes.row * Field.BLOCKAGE_SIZE;
+        if (this.direction.up) this.y += Field.BLOCKAGE_SIZE;
 
         getRandomDirection();
     }.bind(this);
@@ -331,67 +388,13 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
     };
 
     this.draw = function(CTX) {
-        CTX.drawImage(IMAGE, Enemy.START, Enemy.START, Enemy.SIZE, Enemy.SIZE, this.x,
-            this.y, Enemy.WIDTH, Enemy.HEIGHT);
+        CTX.drawImage(IMAGE, ENEMY_START, ENEMY_START, ENEMY_SIZE, ENEMY_SIZE, this.x,
+            this.y, ENEMY_WIDTH, ENEMY_HEIGHT);
     };
 
     this.initialize(enemyDirection);
 }
 
-Enemy.WIDTH = 20;
-Enemy.HEIGHT = 20;
-Enemy.START = 0;
-Enemy.SIZE = 504;
-
-const getStartEnemies = function() {
-    return [
-        {
-            enemyX: 2 * Field.BLOCKAGESIZE,
-            enemyY: 6 * Field.BLOCKAGESIZE,
-        },
-        {
-            enemyX: 2 * Field.BLOCKAGESIZE,
-            enemyY: 21 * Field.BLOCKAGESIZE,
-        },
-        {
-            enemyX: 36 * Field.BLOCKAGESIZE,
-            enemyY: 6 * Field.BLOCKAGESIZE,
-        },
-        {
-            enemyX: 36 * Field.BLOCKAGESIZE,
-            enemyY: 21 * Field.BLOCKAGESIZE,
-        },
-    ];
-};
-
 Enemy.initializeEnemies = function() {
     return getStartEnemies().map((enemy) => new Enemy(enemy));
-};
-
-const isCollide = function(row, column) {
-    return MATRIX[row][column] === 1;
-};
-
-const isCollideLeft = function(indexes, isDirection = false) {
-    if (isDirection) return isCollide(indexes.row, indexes.column - 1);
-
-    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.column);
-};
-
-const isCollideRight = function(indexes, isDirection = false) {
-    if (isDirection) return isCollide(indexes.row, indexes.columnWide + 1);
-
-    return isCollide(indexes.row, indexes.columnWide) || isCollide(indexes.rowWide, indexes.columnWide);
-};
-
-const isCollideUp = function(indexes, isDirection = false) {
-    if (isDirection) return isCollide(indexes.row - 1, indexes.column);
-
-    return isCollide(indexes.row, indexes.column) || isCollide(indexes.row, indexes.columnWide);
-};
-
-const isCollideDown = function(indexes, isDirection = false) {
-    if (isDirection) return isCollide(indexes.rowWide + 1, indexes.column);
-
-    return isCollide(indexes.row, indexes.column) || isCollide(indexes.rowWide, indexes.columnWide);
 };
