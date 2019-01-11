@@ -155,6 +155,10 @@ a:hover {
     display: block;
 }
 
+.table td, .table th {
+    padding: .66rem;
+}
+
 .userName {
     font-size: 20px;
     margin-bottom: 5px;

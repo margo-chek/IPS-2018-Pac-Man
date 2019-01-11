@@ -12,7 +12,7 @@ export function isWall( number ) {
     return number === WALL;
 }
 
-export function draw( CTX ) {
+export function draw( ctx ) {
     let blockageX = 0;
     let blockageY = 0;
     const dBlockageX = 20;
@@ -20,8 +20,8 @@ export function draw( CTX ) {
 
     MATRIX.forEach( ( item ) => {
         item.forEach( ( number ) => {
-            CTX.fillStyle = isWall( number ) ? WALL_COLOR : FREE_SPACE_COLOR;
-            CTX.fillRect( blockageX, blockageY, BLOCKAGE_SIZE, BLOCKAGE_SIZE );
+            ctx.fillStyle = isWall( number ) ? WALL_COLOR : FREE_SPACE_COLOR;
+            ctx.fillRect( blockageX, blockageY, BLOCKAGE_SIZE, BLOCKAGE_SIZE );
             blockageX += dBlockageX;
         } );
         blockageX = 0;
@@ -60,11 +60,10 @@ export function getFreeCell( enemies, hero ) {
 
     const cellsCount = freeCells.column.length - 1;
     const index = Math.round( Math.random() * cellsCount );
-    // const index = Math.round(Math.random() * (0 - cellsCount)) + cellsCount;
 
     const result = {
-        x: freeCells.column[index], // 7
-        y: freeCells.row[index], // 14
+        x: freeCells.column[index],
+        y: freeCells.row[index],
     };
     console.log( result );
 

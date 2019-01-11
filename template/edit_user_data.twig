@@ -1,17 +1,29 @@
 {% extends "layout.twig" %}
 
-{% block title %}
-  {{ titleText }}
-{% endblock %}
-
 {% block content %}
+
+  <div class="container containerMenu my-4">
+    <div class="row justify-content-start">
+      <div class="menu col-6">
+        <div class="imgMainName"></div>
+      </div>
+      <div class="col-4 my-4">
+        <div class="row">
+          <div class="col-sm-3">
+            <button type="button" class="btn btn-danger  btn-block buttonRecord" onclick="window.location = 'index.php'">Выйти</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
     {% include 'message.twig' %}
       <div class="row">
         <div class="col-md-12">
           <h3>Редактирование персональных данных</h3>
         </div>
         <div class="col-md-2">
-          <img src="{% if user.img == null %} /img/avatar/noavatar.png {% else %} {{ user.img }} {% endif %}" id="avatar" class="img-responsive img-circle center-block avatar_single visitcard">
+          <img src="{% if user.img == null %} /img/avatar/noavatar.png {% else %} {{ user.img }} {% endif %}"
+               id="avatar" class="img-responsive img-circle center-block avatar_single visitcard">
           <div class="text-center">
             <label class="btn btn-primary btn-sm buttons_book avatar_btn">
               Обновить фото
@@ -32,12 +44,8 @@
                 <div class="block_bottom_offset">
                   <input type="hidden" value=" {{ userId }}" name="userId">
                   <label for="username">Имя</label>
-                  <input class="form-control" id="username" value="{{ user["Name"] }}" name="name" autocomplete="off" required>
-                </div>
-                <div class="block_bottom_offset">
-                  <label for="usersubname">Фамилия</label>
-                  <input class="form-control" id="usersubname" 
-                  value="{{ user["Subname"] }}" name="subname" autocomplete="off" required>
+                  <input class="form-control" id="username" value="{{ user["Name"] }}" name="name"
+                         autocomplete="off" required>
                 </div>
                 <div class="block_bottom_offset">
                   <label for="userEmail">E-mail</label>
@@ -54,7 +62,8 @@
               <form action="actions/update_pass.php" method="post" enctype="multipart/form-data">
                 <div class="block_bottom_offset">
                   <label for="userOldPass">Старый пароль</label>
-                  <input type="password" class="form-control" id="userOldPass" value="" name="oldPass" placeholder="Старый пароль" required>
+                  <input type="password" class="form-control" id="userOldPass" value="" name="oldPass"
+                         placeholder="Старый пароль" required>
                 </div>
                 <div class="block_bottom_offset">
                   <label for="userNewPass1">Новый пароль</label>
@@ -77,4 +86,5 @@
            </div> 
         </div>
       </div>
+  </div>
 {% endblock %}

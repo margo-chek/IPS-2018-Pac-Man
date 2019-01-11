@@ -248,9 +248,9 @@ export default function Hero({heroX, heroY}) {
         return objects.some(this.checkCollisionWithObject);
     };
 
-    this.draw = function(CTX) {
+    this.draw = function(ctx) {
         if (this.isCollided) {
-            CTX.drawImage(this.currImage, HERO_START, HERO_START, HERO_SIZE, HERO_SIZE,
+            ctx.drawImage(this.currImage, HERO_START, HERO_START, HERO_SIZE, HERO_SIZE,
                 this.x, this.y, HERO_WIDTH, HERO_HEIGHT);
 
             return;
@@ -270,7 +270,7 @@ export default function Hero({heroX, heroY}) {
             }
         }
 
-        CTX.drawImage(this.currImage, HERO_START, HERO_START, HERO_SIZE, HERO_SIZE,
+        ctx.drawImage(this.currImage, HERO_START, HERO_START, HERO_SIZE, HERO_SIZE,
             this.x, this.y, HERO_WIDTH, HERO_HEIGHT);
     };
 }

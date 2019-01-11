@@ -1,5 +1,4 @@
 'use strict';
-import {wall} from './ctx.js';
 import {MATRIX} from './matrix.js';
 import * as Field from './field.js';
 
@@ -59,6 +58,7 @@ const ENEMY_WIDTH = 20;
 const ENEMY_HEIGHT = 20;
 const ENEMY_START = 0;
 const ENEMY_SIZE = 504;
+const WALL_SIZE = 20;
 
 // let enemyId = 0;
 
@@ -67,8 +67,8 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
     this.x = Math.round(enemyX);
     this.y = Math.round(enemyY);
 
-    const IMAGE = new Image(ENEMY_SIZE, ENEMY_SIZE);
-    IMAGE.src = '/pacman/web/image/ene.png';
+    const imageEmeny = new Image(ENEMY_SIZE, ENEMY_SIZE);
+    imageEmeny.src = '/pacman/web/image/ene.png';
 
     this.direction = {OY: false, OX: false, left: false, right: false, up: false, down: false};
     this.directionChangeInterval = null;
@@ -95,18 +95,18 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
 
     const initializeDirection = function(direction, collision) {
         switch (direction) {
-            case 'up':
-                if (!collision.up) initializeUpDirection();
-                break;
-            case 'down':
-                if (!collision.down) initializeDownDirection();
-                break;
-            case 'left':
-                if (!collision.left) initializeLeftDirection();
-                break;
-            case 'right':
-                if (!collision.right) initializeRightDirection();
-                break;
+        case 'up':
+            if (!collision.up) initializeUpDirection();
+            break;
+        case 'down':
+            if (!collision.down) initializeDownDirection();
+            break;
+        case 'left':
+            if (!collision.left) initializeLeftDirection();
+            break;
+        case 'right':
+            if (!collision.right) initializeRightDirection();
+            break;
         }
     };
 
@@ -144,18 +144,18 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
 
     const setDirection = function(direction) {
         switch (direction) {
-            case 'up':
-                setUpDirection();
-                break;
-            case 'down':
-                setDownDirection();
-                break;
-            case 'left':
-                setLeftDirection();
-                break;
-            case 'right':
-                setRightDirection();
-                break;
+        case 'up':
+            setUpDirection();
+            break;
+        case 'down':
+            setDownDirection();
+            break;
+        case 'left':
+            setLeftDirection();
+            break;
+        case 'right':
+            setRightDirection();
+            break;
         }
     };
 
@@ -203,7 +203,7 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
         if (this.direction.OY) reflectByOY();
     }.bind(this);
 
-    const getRandomDirection = function() {
+    const setRandomDirection = function() {
         clearInterval(this.directionChangeInterval);
         this.directionChangeInterval = null;
 
@@ -232,14 +232,14 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
         this.x = indexes.column * Field.BLOCKAGE_SIZE;
         if (this.direction.left) this.x += Field.BLOCKAGE_SIZE;
 
-        getRandomDirection();
+        setRandomDirection();
     }.bind(this);
 
     const fixWhenOYCollision = function(indexes) {
         this.y = indexes.row * Field.BLOCKAGE_SIZE;
         if (this.direction.up) this.y += Field.BLOCKAGE_SIZE;
 
-        getRandomDirection();
+        setRandomDirection();
     }.bind(this);
 
     const checkCollisionWithField = function(step = 0) {
@@ -336,8 +336,8 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
             this.directionChangeInterval = setInterval(() => chooseNewDirection(), 300);
         }
 
-        if (!Number.isInteger(this.x / wall) && this.direction.OX) return;
-        if (!Number.isInteger(this.y / wall) && this.direction.OY) return;
+        if (!Number.isInteger(this.x / WALL_SIZE) && this.direction.OX) return;
+        if (!Number.isInteger(this.y / WALL_SIZE) && this.direction.OY) return;
 
         const collideDirections = getCollideSides('direction');
 
@@ -375,7 +375,7 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
         const collision = getCollideSides('direction');
 
         if (expectedDirection !== '') {
-            getRandomDirection();
+            setRandomDirection();
         } else {
             initializeDirection(expectedDirection, collision);
         }
@@ -387,8 +387,8 @@ export default function Enemy({enemyX, enemyY, enemyDirection = ''}) {
         updatePosition(step);
     };
 
-    this.draw = function(CTX) {
-        CTX.drawImage(IMAGE, ENEMY_START, ENEMY_START, ENEMY_SIZE, ENEMY_SIZE, this.x,
+    this.draw = function(ctx) {
+        ctx.drawImage(imageEmeny, ENEMY_START, ENEMY_START, ENEMY_SIZE, ENEMY_SIZE, this.x,
             this.y, ENEMY_WIDTH, ENEMY_HEIGHT);
     };
 

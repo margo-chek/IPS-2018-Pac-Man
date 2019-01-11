@@ -8,16 +8,16 @@ import PointCounter from './pointCounter.js';
 import GameStateHandler from './gameStateHandler.js';
 import {CANVAS_WIDTH, CANVAS_HEIGHT} from './ctx.js';
 
-function clearFon(CTX) {
-    CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+function clearFon(ctx) {
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-function redraw(CTX, {hero, enemies, fruits}) {
-    clearFon(CTX);
-    Field.draw(CTX);
-    for (const fruit of fruits) fruit && fruit.draw(CTX);
-    hero.draw(CTX);
-    for (const enemy of enemies) enemy.draw(CTX);
+function redraw(ctx, {hero, enemies, fruits}) {
+    clearFon(ctx);
+    Field.draw(ctx);
+    for (const fruit of fruits) fruit && fruit.draw(ctx);
+    hero.draw(ctx);
+    for (const enemy of enemies) enemy.draw(ctx);
 }
 
 function addNewEnemy(hero, enemies) {
@@ -80,14 +80,17 @@ function main() {
     const CANVAS = document.getElementById('Canvas');
     CANVAS.width = CANVAS_WIDTH;
     CANVAS.height = CANVAS_HEIGHT;
-    const CTX = CANVAS.getContext('2d');
+    const ctx = CANVAS.getContext('2d');
+    CANVAS.addEventListener('click', () => {
+        document.getElementById('audio').play();
+    }, false);
     const deltaTime = 1 / 60;
     const delayTime = Math.floor(1000 / 60);
     const gameObjects = initializeGameObjects();
 
     const gameStateHandler = new GameStateHandler();
 
-    redraw(CTX, gameObjects);
+    redraw(ctx, gameObjects);
     const animateFn = () => {
         if (gameStateHandler.state === 'pause') {
             setTimeout(animateFn, delayTime);
@@ -100,7 +103,7 @@ function main() {
 
         if (gameObjects.fruits.every((fruit) => !fruit)) gameObjects.fruits = Fruit.initializeFruits();
 
-        redraw(CTX, gameObjects);
+        redraw(ctx, gameObjects);
 
         setTimeout(animateFn, delayTime);
     };

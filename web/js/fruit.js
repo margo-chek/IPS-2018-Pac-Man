@@ -12,11 +12,11 @@ export default function Fruit({fruitX, fruitY}) {
     this.y = Math.round(fruitY);
     this.isFruit = true;
 
-    const IMAGE = new Image(FRUIT_SIZE, FRUIT_SIZE);
-    IMAGE.src = '/pacman/web/image/fru.png';
+    const imageFruit = new Image(FRUIT_SIZE, FRUIT_SIZE);
+    imageFruit.src = '/pacman/web/image/fru.png';
 
-    this.draw = function(CTX) {
-        CTX.drawImage(IMAGE, FRUIT_START, FRUIT_START, FRUIT_SIZE, FRUIT_SIZE,
+    this.draw = function(ctx) {
+        ctx.drawImage(imageFruit, FRUIT_START, FRUIT_START, FRUIT_SIZE, FRUIT_SIZE,
             this.x, this.y, FRUIT_WIDTH, FRUIT_HEIGHT);
     };
 }
