@@ -19,6 +19,9 @@
     }
     
     $name = $_POST['name'];
+    if (isUserExistByName($name)) {
+            redirect('../login.php?result=' . ERR_USER_REGISTRATION_WRONG_NAME);
+        }
 
     if (createUser($email, $passHash, $name)) {
         redirect('../login.php?result=' . ERR_USER_REGISTRATION_DONE);

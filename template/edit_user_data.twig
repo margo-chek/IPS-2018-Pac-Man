@@ -1,4 +1,4 @@
-{% extends "layout.twig" %}
+{% extends('layout.html.twig') %}
 
 {% block content %}
 
@@ -10,33 +10,20 @@
       <div class="col-4 my-4">
         <div class="row">
           <div class="col-sm-3">
-            <button type="button" class="btn btn-danger  btn-block buttonRecord" onclick="window.location = 'index.php'">Выйти</button>
+            <button type="button" class="btn btn-danger  btn-block buttonRecord"
+                    onclick="window.location = 'index.php'">Выйти</button>
           </div>
         </div>
       </div>
       <div class="col-2"></div>
     </div>
     {% include 'message.twig' %}
-      <div class="row">
+      <div class="row  my-4">
         <div class="col-md-12">
-          <h3>Редактирование персональных данных</h3>
+          <h2>Редактирование персональных данных</h2>
         </div>
-        <div class="col-md-2">
-          <img src="{% if user.img == null %} /img/avatar/noavatar.png {% else %} {{ user.img }} {% endif %}"
-               id="avatar" class="img-responsive img-circle center-block avatar_single visitcard">
-          <div class="text-center">
-            <label class="btn btn-primary btn-sm buttons_book avatar_btn">
-              Обновить фото
-              <input type="file" hidden id="fileChoice">
-            </label>
-            {% if user.img != null %}
-              <span class="btn btn-default btn-sm buttons_book avatar_btn" id="deleteAvatar">
-                Удалить аватар
-              </span>
-            {% endif %}
-          </div>
-        </div>
-        <div class="col-md-10">
+        <div class="container containerMainPage">
+          <div class="col-md-10">
           <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-12">
               <h4>Основная информация</h4>
@@ -49,10 +36,10 @@
                 </div>
                 <div class="block_bottom_offset">
                   <label for="userEmail">E-mail</label>
-                  <input class="form-control" id="userEmail" 
-                  value="{{ user["email"] }}" name="email" autocomplete="off" required>
+                  <input class="form-control" id="userEmail" value="{{ user["email"] }}" name="email"
+                         autocomplete="off" required>
                 </div>
-                <button type="submit" class="btn btn-info btn-sm btn-with-margin">
+                <button type="submit" class="btn btn-info btn-sm btn-with-margin btnUser">
                   Обновить информацию
                 </button>
               </form>
@@ -74,17 +61,19 @@
                     </div>
                     <div class="col-md-6 col-sm-6 block_bottom_offset">
                       <input type="password" class="form-control" id="userNewPass2" 
-                      value="" name="pass2" placeholder="Повторите, чтобы не ошибиться" required>
+                      value="" name="pass2" placeholder="Повторите" required>
                     </div>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-info btn-sm btn-with-margin">
+                <button type="submit" class="btn btn-info btn-sm btn-with-margin btnUser">
                   Обновить пароль
                 </button>
               </form>
             </div>
-           </div> 
+           </div>
+          </div>
         </div>
       </div>
   </div>
+
 {% endblock %}

@@ -10,6 +10,11 @@ h2 {
     color: green;
 }
 
+.h4, h4 {
+    color: aqua;
+    margin: 10px 0;
+}
+
  Canvas {
     display: flex;
     margin: 0 auto 20px;
@@ -72,6 +77,10 @@ h2 {
 .buttonInGame {
     padding: 8px 4px;
     font-size: 18px;
+}
+
+.btnUser {
+    margin-top: 20px;
 }
 
 .buttonlogin {

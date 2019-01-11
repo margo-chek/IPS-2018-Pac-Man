@@ -5,7 +5,13 @@
         $result = dbQueryGetResult($query);
         return (!empty($result));
     }
-    
+
+    function isUserExistByName($name)
+        {
+            $query = 'SELECT * FROM users WHERE Name ="' . dbQuote($name) . '"';
+            $result = dbQueryGetResult($query);
+            return (!empty($result));
+        }
     
     function createUser($email, $passHash, $name)
     { 
@@ -76,24 +82,19 @@
     
     function getUsersData()
     {
-        $query = 'SELECT id, name, subname, email, rights, ban FROM users';
+        $query = 'SELECT id, name, email, FROM users';
         return dbQueryGetResult($query);
     }
     
     function getUserRight($id){
-        $query = 'SELECT rights FROM users 
+        $query = 'SELECT rights FROM users
                   WHERE id = ' . dbQuote($id);
         $result = dbQueryGetResult($query);
         if (empty($result)) {
             return 'noUser';
         }
-        if ($result[0]['rights'] == 'user') {
-            return 'user';
-        } else {
-            return 'admin';
-        }
     }
-    
+
     function flipRight($id) 
     {
         if (getUserRight($id) == 'user') { 
@@ -112,7 +113,7 @@
     
     function loadUserData($id) 
     {
-        $query = 'SELECT email, Name, Subname, img
+        $query = 'SELECT email, Name
                   FROM users
                   WHERE id = ' . dbQuote($id) . '
                   ';
@@ -127,7 +128,6 @@
         $query = 'UPDATE users
                   SET 
                       Name = "' . dbQuote($userData['name']) . '",
-                      Subname = "' . dbQuote($userData['subname']) . '",
                       Email = "' . dbQuote($userData['email']) . '"
                   WHERE 
                       id = "' . dbQuote($userData['id']) . '"';
@@ -155,7 +155,7 @@
         }
         $query = '
                   SELECT
-                      Name, Subname, img
+                      Name
                   FROM users
                   WHERE
                       id = "' . dbQuote($id) . '"
@@ -167,8 +167,7 @@
     function validateAddUserRequestData() 
     {
         return (!empty($_POST['email']) || !empty($_POST['pass1']) 
-                  || !empty($_POST['pass2']) || !empty($_POST['name']) 
-                      || !empty($_POST['subname'])); 
+                  || !empty($_POST['pass2']) || !empty($_POST['name']));
     }
     
     function validateUpdateUserRequestData()

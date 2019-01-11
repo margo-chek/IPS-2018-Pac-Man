@@ -11,3 +11,4 @@
     define("BAD_PASS", 13);
     define("COMMENT_WAS_ADD", 14);
     define("CANT_SAVE_SCORE", 15);
+    define("ERR_USER_REGISTRATION_WRONG_NAME", 16);
